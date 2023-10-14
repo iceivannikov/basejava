@@ -5,11 +5,11 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[3];
+    Resume[] storage = new Resume[10000];
     int size;
 
     void clear() {
-        for (int i = 0; i < size - 1; i++) {
+        for (int i = 0; i <= storage.length - 1; i++) {
             storage[i] = null;
         }
         size = 0;
@@ -20,7 +20,7 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < size - 1; i++) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
                 return storage[i];
             }
@@ -30,7 +30,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int i;
-        for (i = 0; i < size - 1; i++) {
+        for (i = 0; i < size; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
                 break;
             }
