@@ -5,7 +5,7 @@ import java.util.Objects;
  * Array-based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    Resume[] storage = new Resume[3];
     int size;
 
     void clear() {
@@ -27,10 +27,11 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int i;
-        for (i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(storage[i].uuid, uuid)) {
-                storage[i] = storage[--size];
+                storage[i] = storage[size - 1];
+                size--;
+                break;
             }
         }
     }
