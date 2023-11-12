@@ -9,7 +9,7 @@ import java.util.Objects;
  * Array-based storage for Resumes
  */
 public class ArrayStorage {
-    private final Resume[] storage = new Resume[2];
+    private final Resume[] storage = new Resume[10_000];
     private int size;
 
     public void clear() {
@@ -18,58 +18,37 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        Objects.requireNonNull(resume, "Resume object cannot be null");
         if (size < storage.length) {
-            if (size == 0) {
+            if (find(resume.getUuid()) == null) {
                 storage[size++] = resume;
+                System.out.printf("Resume with uuid: %s saved successfully%n", resume.getUuid());
             } else {
-                String uuid = resume.getUuid();
-                for (int i = 0; i < size; i++) {
-                    if (!Objects.equals(storage[i].getUuid(), uuid)) {
-                        storage[size++] = resume;
-                        break;
-                    } else {
-                        System.out.println("The resume exists. To update, use the update method");
-                    }
-                }
+                System.out.println("The resume exists. To update, use the update method");
             }
         } else {
             System.out.println("The storage is full, there is nowhere to save");
         }
     }
 
-    public void update(Resume resume) {
-        Objects.requireNonNull(resume, "Resume object cannot be null");
-        String uuid = resume.getUuid();
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getUuid(), uuid)) {
-                storage[i] = resume;
-            } else {
-                System.out.printf("No resume exists with this uuid: %s%n", uuid);
-            }
+    public void update(Resume updatedResume) {
+        Resume resume = find(updatedResume.getUuid());
+        if (resume != null) {
+            resume = updatedResume;
+            System.out.printf("Resume with uuid: %s, was successfully updated", resume.getUuid());
         }
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getUuid(), uuid)) {
-                return storage[i];
-            }
-        }
-        System.out.printf("No resume exists with this uuid: %s%n", uuid);
-        return null;
+        return find(uuid);
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getUuid(), uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                break;
-            } else {
-                System.out.printf("No resume exists with this uuid: %s%n", uuid);
-            }
+        Resume resume = find(uuid);
+        if (resume != null) {
+            resume = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
+            System.out.printf("Resume with uuid: %s successfully deleted", resume.getUuid());
         }
     }
 
@@ -82,5 +61,15 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private Resume find(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(storage[i].getUuid(), uuid)) {
+                return storage[i];
+            }
+        }
+        System.out.printf("No resume exists with this uuid: %s%n", uuid);
+        return null;
     }
 }
