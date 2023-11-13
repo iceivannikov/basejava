@@ -9,7 +9,7 @@ import java.util.Objects;
  * Array-based storage for Resumes
  */
 public class ArrayStorage {
-    public static final int MAX_COUNT_RESUME = 10_000;
+    private static final int MAX_COUNT_RESUME = 10_000;
     private final Resume[] storage = new Resume[MAX_COUNT_RESUME];
     private int size;
 
@@ -19,15 +19,13 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (size < MAX_COUNT_RESUME) {
-            if (getIndex(resume.getUuid()) == -1) {
-                storage[size++] = resume;
-                System.out.printf("Resume with uuid: %s saved successfully%n", resume.getUuid());
-            } else {
-                System.out.println("The resume exists. To update, use the update method");
-            }
-        } else {
+        if (size >= MAX_COUNT_RESUME) {
             System.out.println("The storage is full, there is nowhere to save");
+        } else if (getIndex(resume.getUuid()) != -1) {
+            System.out.println("The resume exists. To update, use the update method");
+        } else {
+            storage[size++] = resume;
+            System.out.printf("Resume with uuid: %s saved successfully%n", resume.getUuid());
         }
     }
 
@@ -36,6 +34,8 @@ public class ArrayStorage {
         if (index != -1) {
             storage[index] = resume;
             System.out.printf("Resume with uuid: %s, was successfully updated", resume.getUuid());
+        } else {
+            System.out.printf("No resume exists with this uuid: %s%n", resume.getUuid());
         }
     }
 
@@ -44,6 +44,7 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
+        System.out.printf("No resume exists with this uuid: %s%n", uuid);
         return null;
     }
 
@@ -54,6 +55,8 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
             System.out.printf("Resume with uuid: %s successfully deleted", uuid);
+        } else {
+            System.out.printf("No resume exists with this uuid: %s%n", uuid);
         }
     }
 
@@ -74,7 +77,6 @@ public class ArrayStorage {
                 return i;
             }
         }
-        System.out.printf("No resume exists with this uuid: %s%n", uuid);
         return -1;
     }
 }
