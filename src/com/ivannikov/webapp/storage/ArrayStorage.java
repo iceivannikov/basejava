@@ -2,81 +2,32 @@ package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.model.Resume;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * Array-based storage for Resumes
  */
-public class ArrayStorage {
-    private static final int MAX_COUNT_RESUME = 10_000;
-    private final Resume[] storage = new Resume[MAX_COUNT_RESUME];
-    private int size;
+public class ArrayStorage extends AbstractArrayStorage {
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+    @Override
+    protected void insertResume(Resume resume) {
+        storage[size++] = resume;
     }
 
-    public void save(Resume resume) {
-        if (size >= MAX_COUNT_RESUME) {
-            System.out.println("The storage is full, there is nowhere to save");
-        } else if (getIndex(resume.getUuid()) != -1) {
-            System.out.println("The resume exists. To update, use the update method");
-        } else {
-            storage[size++] = resume;
-            System.out.printf("Resume with uuid: %s saved successfully%n", resume.getUuid());
-        }
-    }
-
-    public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-            System.out.printf("Resume with uuid: %s, was successfully updated", resume.getUuid());
-        } else {
-            System.out.printf("No resume exists with this uuid: %s%n", resume.getUuid());
-        }
-    }
-
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index != -1) {
-            return storage[index];
-        }
-        System.out.printf("No resume exists with this uuid: %s%n", uuid);
-        return null;
-    }
-
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index != -1) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-            System.out.printf("Resume with uuid: %s successfully deleted", uuid);
-        } else {
-            System.out.printf("No resume exists with this uuid: %s%n", uuid);
-        }
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without a null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-    public int size() {
-        return size;
-    }
-
-    private int getIndex(String uuid) {
+    @Override
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(storage[i].getUuid(), uuid)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void deleteResume(int index) {
+        storage[index] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 }
