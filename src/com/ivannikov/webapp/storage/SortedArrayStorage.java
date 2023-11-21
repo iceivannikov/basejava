@@ -7,12 +7,12 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insertResume(Resume resume) {
-        int index = Math.abs(getIndex(resume.getUuid())) - 1;
-        System.arraycopy(storage, 0, storage, 0, index);
-        storage[index] = resume;
+    protected void insertResume(Resume resume, int index) {
+        int insertIdx = -index - 1;
+        System.arraycopy(storage, 0, storage, 0, insertIdx);
+        storage[insertIdx] = resume;
         size++;
-        System.arraycopy(storage, index, storage, index + 1, size - index - 1);
+        System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx - 1);
     }
 
     @Override
@@ -25,7 +25,5 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void deleteResume(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-        storage[size - 1] = null;
-        size--;
     }
 }
