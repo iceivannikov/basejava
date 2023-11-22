@@ -1,5 +1,8 @@
 package com.ivannikov.webapp.storage;
 
+import com.ivannikov.webapp.exception.ExistStorageException;
+import com.ivannikov.webapp.exception.NotExistStorageException;
+import com.ivannikov.webapp.exception.StorageException;
 import com.ivannikov.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -17,12 +20,11 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (size >= MAX_COUNT_RESUME) {
-            System.out.println("The storage is full, there is nowhere to save");
+            throw new StorageException("The storage is full, there is nowhere to save", resume.getUuid());
         } else if (getIndex(resume.getUuid()) >= 0) {
-            System.out.println("The resume exists. To update, use the update method");
+            throw new ExistStorageException(resume.getUuid());
         } else {
             insertResume(resume, index);
-            System.out.printf("Resume with uuid: %s saved successfully%n", resume.getUuid());
         }
     }
 
@@ -30,9 +32,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
-            System.out.printf("Resume with uuid: %s, was successfully updated", resume.getUuid());
         } else {
-            System.out.printf("No resume exists with this uuid: %s%n", resume.getUuid());
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -41,8 +42,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        System.out.printf("No resume exists with this uuid: %s%n", uuid);
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     public final void delete(String uuid) {
@@ -51,9 +51,8 @@ public abstract class AbstractArrayStorage implements Storage {
             deleteResume(index);
             storage[size - 1] = null;
             size--;
-            System.out.printf("Resume with uuid: %s successfully deleted", uuid);
         } else {
-            System.out.printf("No resume exists with this uuid: %s%n", uuid);
+            throw new NotExistStorageException(uuid);
         }
     }
 
