@@ -2,7 +2,7 @@ package com.ivannikov.webapp.storage;
 
 public class SortedArrayStorageTest extends AbstractArrayStorageTest {
 
-    protected SortedArrayStorageTest() {
+    public SortedArrayStorageTest() {
         super(new SortedArrayStorage());
     }
 }
