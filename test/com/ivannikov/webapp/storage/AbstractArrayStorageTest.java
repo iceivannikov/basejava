@@ -7,8 +7,7 @@ import com.ivannikov.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
@@ -38,15 +37,16 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void clear() {
         storage.clear();
-        int expected = 0;
-        int actual = storage.size();
-        assertEquals(expected, actual);
+        assertSize(0);
+        Resume[] expected = storage.getAll();
+        assertArrayEquals(expected, storage.getAll());
     }
 
     @Test(expected = StorageException.class)
     public void overflow() {
+        storage.clear();
         try {
-            for (int i = 4; i <= AbstractArrayStorage.MAX_COUNT_RESUME; i++) {
+            for (int i = 1; i <= AbstractArrayStorage.MAX_COUNT_RESUME; i++) {
                 storage.save(new Resume("uuid" + i));
             }
         } catch (StorageException e) {
@@ -64,10 +64,8 @@ public abstract class AbstractArrayStorageTest {
     public void save() {
         Resume resume = new Resume(UUID_4);
         storage.save(resume);
-        int expected = 4;
-        int actual = storage.size();
-        assertEquals(expected, actual);
-        assertEquals(resume, storage.get(resume.getUuid()));
+        assertSize(4);
+        assertGet(resume);
     }
 
     @Test
@@ -85,9 +83,9 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        assertEquals(RESUME_1, storage.get(UUID_1));
-        assertEquals(RESUME_2, storage.get(UUID_2));
-        assertEquals(RESUME_3, storage.get(UUID_3));
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -98,9 +96,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(UUID_2);
-        int expected = 2;
-        int actual = storage.size();
-        assertEquals(expected, actual);
+        assertSize(2);
         storage.get(UUID_2);
     }
 
@@ -111,19 +107,23 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] resumes = storage.getAll();
-        int expected = 3;
-        int actual = resumes.length;
-        assertEquals(expected, actual);
-        assertEquals(RESUME_1, resumes[0]);
-        assertEquals(RESUME_2, resumes[1]);
-        assertEquals(RESUME_3, resumes[2]);
+        Resume[] expected = new Resume[3];
+        expected[0] = RESUME_1;
+        expected[1] = RESUME_2;
+        expected[2] = RESUME_3;
+        assertArrayEquals(expected, storage.getAll());
     }
 
     @Test
     public void size() {
-        int expected = 3;
-        int actual = storage.size();
-        assertEquals(expected, actual);
+        assertSize(3);
+    }
+
+    private void assertGet(Resume resume) {
+        assertEquals(resume, storage.get(resume.getUuid()));
+    }
+
+    private void assertSize(int size) {
+        assertEquals(size, storage.size());
     }
 }
