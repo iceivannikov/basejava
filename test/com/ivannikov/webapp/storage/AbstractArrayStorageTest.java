@@ -46,7 +46,7 @@ public abstract class AbstractArrayStorageTest {
     public void overflow() {
         storage.clear();
         try {
-            for (int i = 1; i <= AbstractArrayStorage.MAX_COUNT_RESUME; i++) {
+            for (int i = 0; i < AbstractArrayStorage.MAX_COUNT_RESUME; i++) {
                 storage.save(new Resume("uuid" + i));
             }
         } catch (StorageException e) {
@@ -107,10 +107,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] expected = new Resume[3];
-        expected[0] = RESUME_1;
-        expected[1] = RESUME_2;
-        expected[2] = RESUME_3;
+        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
         assertArrayEquals(expected, storage.getAll());
     }
 

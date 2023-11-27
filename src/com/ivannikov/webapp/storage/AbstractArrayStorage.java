@@ -7,8 +7,9 @@ import com.ivannikov.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int MAX_COUNT_RESUME = 10_000;
+
     protected final Resume[] storage = new Resume[MAX_COUNT_RESUME];
     protected int size;
 
