@@ -1,57 +1,52 @@
 package com.ivannikov.webapp.storage;
 
-import com.ivannikov.webapp.exception.ExistStorageException;
-import com.ivannikov.webapp.exception.NotExistStorageException;
 import com.ivannikov.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ListStorage extends AbstractStorage {
 
     private final List<Resume> storage = new ArrayList<>();
 
     @Override
-    public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    public void save(Resume resume) {
-        if (storage.contains(resume)) {
-            throw new ExistStorageException(resume.getUuid());
-        }
+    protected void doSave(Resume resume, Object searchKey) {
         storage.add(resume);
     }
 
     @Override
-    public void update(Resume resume) {
-        if (storage.contains(resume)) {
-            int index = getIndex(resume.getUuid());
-            storage.set(index, resume);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage.set((Integer) searchKey, resume);
     }
 
     @Override
-    public Resume get(String uuid) {
-        Optional<Resume> optionalResume = storage.stream().filter(r -> r.getUuid().equals(uuid)).findFirst();
-        if (optionalResume.isPresent()) {
-            return optionalResume.get();
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    protected Resume doGet(Object searchKey) {
+        return storage.get((Integer) searchKey);
     }
 
     @Override
-    public void delete(String uuid) {
-        try {
-            storage.removeIf(resume -> resume.getUuid().equals(uuid));
-        } catch (NullPointerException e) {
-            throw new NotExistStorageException(uuid);
+    protected void doDelete(Object searchKey) {
+        storage.remove(((Integer) searchKey).intValue());
+    }
+
+    @Override
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (storage.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
         }
+        return null;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
     }
 
     @Override
@@ -63,18 +58,5 @@ public class ListStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
-    }
-
-    public List<Resume> getStorage() {
-        return new ArrayList<>(storage);
-    }
-
-    private int getIndex(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
     }
 }
