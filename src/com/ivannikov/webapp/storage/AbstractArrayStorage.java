@@ -17,6 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
             throw new StorageException("The storage is full, there is nowhere to save", resume.getUuid());
         } else {
             insertResume(resume, (Integer) index);
+            size++;
         }
     }
     @Override
