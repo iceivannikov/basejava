@@ -21,9 +21,10 @@ public class MainRecursion {
 
         int target = 5;
         int result = recursiveBinarySearch(numbers, 0, numbers.length - 1, target);
-        System.out.println(result == -1 ? "Item not found" : target + " element found at position " + result);
+        System.out.print("Binary search: ");
+        System.out.println(result == -1 ? "item not found" : target + " element found at position " + result);
 
-        int number = 3;
+        int number = 5;
         int factorial = factorial(number);
         System.out.printf("Factorial number %d is %d%n", number, factorial);
     }
