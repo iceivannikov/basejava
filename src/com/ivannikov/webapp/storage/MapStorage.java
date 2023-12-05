@@ -4,7 +4,6 @@ import com.ivannikov.webapp.model.Resume;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MapStorage extends AbstractStorage {
 
@@ -32,13 +31,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Set<Map.Entry<String, Resume>> entries = storage.entrySet();
-        for (Map.Entry<String, Resume> entry : entries) {
-            if (entry.getKey().equals(uuid)) {
-                return uuid;
-            }
-        }
-        return null;
+        return uuid;
     }
 
     @Override
