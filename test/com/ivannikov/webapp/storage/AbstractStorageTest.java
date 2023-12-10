@@ -6,7 +6,9 @@ import com.ivannikov.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
@@ -17,10 +19,15 @@ public abstract class AbstractStorageTest {
     private final static String UUID_3 = "uuid3";
     private final static String UUID_4 = "uuid4";
 
-    private final static Resume RESUME_1 = new Resume(UUID_1);
-    private final static Resume RESUME_2 = new Resume(UUID_2);
-    private final static Resume RESUME_3 = new Resume(UUID_3);
-    private final static Resume RESUME_4 = new Resume(UUID_4);
+    private final static String NAME_1 = "name1";
+    private final static String NAME_2 = "name2";
+    private final static String NAME_3 = "name3";
+    private final static String NAME_4 = "name4";
+
+    private final static Resume RESUME_1 = new Resume(UUID_1, NAME_1);
+    private final static Resume RESUME_2 = new Resume(UUID_2, NAME_2);
+    private final static Resume RESUME_3 = new Resume(UUID_3, NAME_3);
+    private final static Resume RESUME_4 = new Resume(UUID_4, NAME_4);
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -38,8 +45,6 @@ public abstract class AbstractStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] expected = storage.getAll();
-        assertArrayEquals(expected, storage.getAll());
     }
 
     @Test(expected = ExistStorageException.class)
@@ -49,7 +54,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        Resume resume = new Resume(UUID_4);
+        Resume resume = new Resume(UUID_4, NAME_4);
         storage.save(resume);
         assertSize(4);
         assertGet(resume);
@@ -57,7 +62,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume expected = new Resume(UUID_1);
+        Resume expected = new Resume(UUID_1, "new name");
         storage.update(expected);
         Resume actual = storage.get(UUID_1);
         assertEquals(expected, actual);
@@ -93,9 +98,10 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
-        assertArrayEquals(expected, storage.getAll());
+    public void getAllSorted() {
+        List<Resume> expected = storage.getAllSorted();
+        assertEquals(3, storage.size());
+        assertEquals(expected, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test

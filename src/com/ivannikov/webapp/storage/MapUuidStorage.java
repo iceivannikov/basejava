@@ -2,11 +2,14 @@ package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.model.Resume;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public abstract class AbstractMapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
-    private final Map<String, Resume> storage = new LinkedHashMap<>();
+    private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
@@ -29,6 +32,11 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
+    protected Object getSearchKey(String uuid) {
+        return uuid;
+    }
+
+    @Override
     protected boolean isExist(Object searchKey) {
         return storage.containsKey(searchKey);
     }
@@ -39,10 +47,8 @@ public abstract class AbstractMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>(storage.values());
-        resumes.sort(getComparator());
-        return resumes;
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
