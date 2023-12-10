@@ -4,6 +4,7 @@ import com.ivannikov.webapp.exception.StorageException;
 import com.ivannikov.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int MAX_COUNT_RESUME = 10_000;
@@ -45,11 +46,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without a null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> resumeList = Arrays.asList(storage);
+        resumeList.sort(getComparator());
+        return resumeList;
     }
 
     public int size() {

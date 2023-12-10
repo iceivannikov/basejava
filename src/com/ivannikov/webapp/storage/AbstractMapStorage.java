@@ -2,10 +2,9 @@ package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.model.Resume;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public abstract class AbstractMapStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new LinkedHashMap<>();
 
@@ -30,11 +29,6 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
-        return uuid;
-    }
-
-    @Override
     protected boolean isExist(Object searchKey) {
         return storage.containsKey(searchKey);
     }
@@ -45,9 +39,10 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] resumes = new Resume[storage.size()];
-        return storage.values().toArray(resumes);
+    public List<Resume> getAllSorted() {
+        List<Resume> resumes = new ArrayList<>(storage.values());
+        resumes.sort(getComparator());
+        return resumes;
     }
 
     @Override
