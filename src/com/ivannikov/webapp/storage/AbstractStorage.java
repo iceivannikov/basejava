@@ -30,7 +30,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public final Comparator<Resume> getComparator() {
-        return (Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
+        return (Comparator.comparing(Resume::getUuid));
     }
 
     @Override
