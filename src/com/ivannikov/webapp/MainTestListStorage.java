@@ -8,10 +8,10 @@ public class MainTestListStorage {
 
     private static final Storage STORAGE = new ListStorage();
     public static void main(String[] args) {
-        Resume r1 = new Resume("uuid1");
-        Resume r2 = new Resume("uuid2");
-        Resume r3 = new Resume("uuid3");
-        Resume r5 = new Resume("uuid5");
+        Resume r1 = new Resume("uuid1", "name1");
+        Resume r2 = new Resume("uuid2","name2");
+        Resume r3 = new Resume("uuid3","name3");
+        Resume r5 = new Resume("uuid5","name5");
 
         STORAGE.save(r1);
         STORAGE.save(r2);
