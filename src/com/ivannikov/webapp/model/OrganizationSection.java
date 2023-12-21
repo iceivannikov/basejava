@@ -7,6 +7,10 @@ import java.util.Objects;
 public class OrganizationSection extends Section {
     private List<Organization> organizations;
 
+    public OrganizationSection(List<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
     public List<Organization> getOrganizations() {
         return new ArrayList<>(organizations);
     }
@@ -40,7 +44,13 @@ public class OrganizationSection extends Section {
     @Override
     public void print() {
         for (Organization organization : organizations) {
-            System.out.println(organization);
+            System.out.println(organization.getName());
+            List<Period> periods = organization.getPeriods();
+            for (Period period : periods) {
+                System.out.println(period.getStartDate().getMonthValue() + "/" + period.getStartDate().getYear() + "-"
+                        + period.getEndDate().getMonthValue() + "/" + period.getEndDate().getYear() + " "
+                        + period.getDescription());
+            }
         }
     }
 }
