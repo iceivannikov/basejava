@@ -19,8 +19,8 @@ public class Resume  {
 
     private Map<SectionType, Section> sections;
 
-    public Resume(String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
-        this(UUID.randomUUID().toString(), fullName, contacts, sections);
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
