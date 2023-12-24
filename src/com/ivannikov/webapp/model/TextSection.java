@@ -6,6 +6,7 @@ public class TextSection extends Section {
     private String textSection;
 
     public TextSection(String textSection) {
+        Objects.requireNonNull(textSection, "textSection must not be null");
         this.textSection = textSection;
     }
 
@@ -24,23 +25,16 @@ public class TextSection extends Section {
 
         TextSection that = (TextSection) o;
 
-        return Objects.equals(textSection, that.textSection);
+        return textSection.equals(that.textSection);
     }
 
     @Override
     public int hashCode() {
-        return textSection != null ? textSection.hashCode() : 0;
+        return textSection.hashCode();
     }
 
     @Override
     public String toString() {
-        return "TextSection{" +
-                "textSection='" + textSection + '\'' +
-                '}';
-    }
-
-    @Override
-    public void print() {
-        System.out.println(textSection);
+        return textSection;
     }
 }

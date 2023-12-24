@@ -8,6 +8,7 @@ public class OrganizationSection extends Section {
     private List<Organization> organizations;
 
     public OrganizationSection(List<Organization> organizations) {
+        Objects.requireNonNull(organizations, "organizations must not be null");
         this.organizations = organizations;
     }
 
@@ -26,31 +27,16 @@ public class OrganizationSection extends Section {
 
         OrganizationSection that = (OrganizationSection) o;
 
-        return Objects.equals(organizations, that.organizations);
+        return organizations.equals(that.organizations);
     }
 
     @Override
     public int hashCode() {
-        return organizations != null ? organizations.hashCode() : 0;
+        return organizations.hashCode();
     }
 
     @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "organizations=" + organizations +
-                '}';
-    }
-
-    @Override
-    public void print() {
-        for (Organization organization : organizations) {
-            System.out.println(organization.getName());
-            List<Period> periods = organization.getPeriods();
-            for (Period period : periods) {
-                System.out.println(period.getStartDate().getMonthValue() + "/" + period.getStartDate().getYear() + "-"
-                        + period.getEndDate().getMonthValue() + "/" + period.getEndDate().getYear() + " "
-                        + period.getDescription());
-            }
-        }
+        return organizations.toString();
     }
 }

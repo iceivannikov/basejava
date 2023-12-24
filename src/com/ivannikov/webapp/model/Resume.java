@@ -53,6 +53,14 @@ public class Resume  {
         return new HashMap<>(contacts);
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

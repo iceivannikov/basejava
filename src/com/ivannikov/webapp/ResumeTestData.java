@@ -45,7 +45,7 @@ public class ResumeTestData {
         for (SectionType sectionType : sectionTypes) {
             System.out.println(sectionType.getTitle());
             Section section = sections.get(sectionType);
-            section.print();
+            System.out.println(section);
         }
     }
 
@@ -117,7 +117,7 @@ public class ResumeTestData {
         qualificationList.add("Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
         qualificationList.add("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, " +
                 "Nagios, iReport, OpenCmis, Bonita, pgBouncer");
-        qualificationList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, " +
+        qualificationList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования, " +
                 "архитектурных шаблонов, UML, функционального программирования.");
         qualificationList.add("Родной русский, английский \"upper intermediate\".");
         return qualificationList;
@@ -150,7 +150,7 @@ public class ResumeTestData {
                         "Организация процесса разработки системы ERP для разных окружений: релизная " +
                                 "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация " +
                                 "Flyway), конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и " +
-                                "серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C " +
+                                "серверной части системы. Разработка интеграционных сервисов: CMIS, BPMN2, 1C " +
                                 "(WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). " +
                                 "Интеграция Alfresco JLAN для online редактирование из браузера документов MS " +
                                 "Office. Maven + plugin development, Ant, Apache Commons, Spring security, " +

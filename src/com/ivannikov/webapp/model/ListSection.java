@@ -8,6 +8,7 @@ public class ListSection extends Section {
     private List<String> listSections;
 
     public ListSection(List<String> listSections) {
+        Objects.requireNonNull(listSections, "listSections must not be null");
         this.listSections = listSections;
     }
 
@@ -26,25 +27,16 @@ public class ListSection extends Section {
 
         ListSection that = (ListSection) o;
 
-        return Objects.equals(listSections, that.listSections);
+        return listSections.equals(that.listSections);
     }
 
     @Override
     public int hashCode() {
-        return listSections != null ? listSections.hashCode() : 0;
+        return listSections.hashCode();
     }
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "listSections=" + listSections +
-                '}';
-    }
-
-    @Override
-    public void print() {
-        for (String section : listSections) {
-            System.out.println(section);
-        }
+        return listSections.toString();
     }
 }

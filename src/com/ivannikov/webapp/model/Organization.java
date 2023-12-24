@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Organization {
-
     private String name;
     private String website;
     private List<Period> periods;
