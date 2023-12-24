@@ -1,5 +1,6 @@
 package com.ivannikov.webapp.storage;
 
+import com.ivannikov.webapp.ResumeTestData;
 import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.NotExistStorageException;
 import com.ivannikov.webapp.model.Resume;
@@ -24,10 +25,10 @@ public abstract class AbstractStorageTest {
     private final static String NAME_3 = "name3";
     private final static String NAME_4 = "name4";
 
-    private final static Resume RESUME_1 = new Resume(UUID_1, NAME_1);
-    private final static Resume RESUME_2 = new Resume(UUID_2, NAME_2);
-    private final static Resume RESUME_3 = new Resume(UUID_3, NAME_3);
-    private final static Resume RESUME_4 = new Resume(UUID_4, NAME_4);
+    private final static Resume RESUME_1 = ResumeTestData.newResume(UUID_1, NAME_1);
+    private final static Resume RESUME_2 = ResumeTestData.newResume(UUID_2, NAME_2);
+    private final static Resume RESUME_3 = ResumeTestData.newResume(UUID_3, NAME_3);
+    private final static Resume RESUME_4 = ResumeTestData.newResume(UUID_4, NAME_4);
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

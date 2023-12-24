@@ -1,31 +1,26 @@
 package com.ivannikov.webapp;
 
 import com.ivannikov.webapp.model.*;
+import com.ivannikov.webapp.util.DateUtil;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ResumeTestData {
     public static void main(String[] args) {
         Map<ContactType, String> contacts = getContacts();
 
-        Section achievementsSection = new ListSection(getAchievementsList());
-        Section qualificationSection = new ListSection(getQualificationList());
-        OrganizationSection organizationJob = new OrganizationSection(getOrganizationsJob());
-        OrganizationSection organizationStudies = new OrganizationSection(getOrganizationsStudies());
-
-
-        Map<SectionType, Section> sections = new HashMap<>();
-        sections.put(SectionType.OBJECTIVE, getPersonalQualities());
-        sections.put(SectionType.PERSONAL, getPosition());
-        sections.put(SectionType.ACHIEVEMENT, achievementsSection);
-        sections.put(SectionType.QUALIFICATIONS, qualificationSection);
-        sections.put(SectionType.EXPERIENCE, organizationJob);
-        sections.put(SectionType.EDUCATION, organizationStudies);
-
+        Map<SectionType, Section> sections = getSections();
 
         Resume resume = new Resume("1", "Григорий Кислин", contacts, sections);
         printResume(resume);
+    }
+
+    public static Resume newResume(String uuid, String name) {
+        return new Resume(uuid, name, getContacts(), getSections());
     }
 
     private static void printResume(Resume resume) {
@@ -57,17 +52,32 @@ public class ResumeTestData {
         contacts.put(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
         contacts.put(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
         contacts.put(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        contacts.put(ContactType.WEBSITE, "http://gkislin.ru/");
+        contacts.put(ContactType.WEBSITE, "https://gkislin.ru/");
         return contacts;
+    }
+
+    private static Map<SectionType, Section> getSections() {
+        Section achievementsSection = new ListSection(getAchievementsList());
+        Section qualificationSection = new ListSection(getQualificationList());
+        OrganizationSection organizationJob = new OrganizationSection(getOrganizationsJob());
+        OrganizationSection organizationStudies = new OrganizationSection(getOrganizationsStudies());
+        Map<SectionType, Section> sections = new HashMap<>();
+        sections.put(SectionType.OBJECTIVE, getPersonalQualities());
+        sections.put(SectionType.PERSONAL, getPosition());
+        sections.put(SectionType.ACHIEVEMENT, achievementsSection);
+        sections.put(SectionType.QUALIFICATIONS, qualificationSection);
+        sections.put(SectionType.EXPERIENCE, organizationJob);
+        sections.put(SectionType.EDUCATION, organizationStudies);
+        return sections;
+    }
+
+    private static TextSection getPersonalQualities() {
+        return new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
     }
 
     private static TextSection getPosition() {
         return new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. " +
                 "Пурист кода и архитектуры.");
-    }
-
-    private static TextSection getPersonalQualities() {
-        return new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
     }
 
     private static List<String> getAchievementsList() {
@@ -114,7 +124,7 @@ public class ResumeTestData {
         qualificationList.add("Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX, " +
                 "SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, ESB, CMIS, BPMN2, " +
                 "LDAP, OAuth1, OAuth2, JWT.");
-        qualificationList.add("Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
+        qualificationList.add("Инструменты: Maven + plugin development, Gradle, настройка Nginx");
         qualificationList.add("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, " +
                 "Nagios, iReport, OpenCmis, Bonita, pgBouncer");
         qualificationList.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования, " +
@@ -126,11 +136,11 @@ public class ResumeTestData {
     private static List<Organization> getOrganizationsJob() {
         Organization JavaOnlineProjects = new Organization(
                 "Java Online Projects",
-                "http://javaops.ru/",
+                "https://javaops.ru/",
                 List.of(new Period(
                         "Автор проекта.",
                         "Создание, организация и проведение Java онлайн проектов и стажировок.",
-                        LocalDate.of(2013, 10, 1),
+                        DateUtil.of(2013,10),
                         LocalDate.now())));
         Organization Wrike = new Organization(
                 "Wrike",
@@ -140,8 +150,8 @@ public class ResumeTestData {
                         "Проектирование и разработка онлайн платформы управления проектами Wrike " +
                                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.",
-                        LocalDate.of(2014, 10, 1),
-                        LocalDate.of(2016, 1, 1))));
+                        DateUtil.of(2014, 10),
+                        DateUtil.of(2016, 1))));
         Organization RITCenter = new Organization(
                 "RIT Center",
                 " ",
@@ -156,8 +166,8 @@ public class ResumeTestData {
                                 "Office. Maven + plugin development, Ant, Apache Commons, Spring security, " +
                                 "Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, Unix shell " +
                                 "remote scripting via ssh tunnels, PL/Python",
-                        LocalDate.of(2012, 4, 1),
-                        LocalDate.of(2014, 10, 1))));
+                        DateUtil.of(2012, 4),
+                        DateUtil.of(2014, 10))));
         List<Organization> organizations = new ArrayList<>();
         organizations.add(RITCenter);
         organizations.add(Wrike);
@@ -172,24 +182,24 @@ public class ResumeTestData {
                 List.of(new Period(
                         "",
                         "'Functional Programming Principles in Scala' by Martin Odersky",
-                        LocalDate.of(2013, 3, 1),
-                        LocalDate.of(2013, 5, 1))));
+                        DateUtil.of(2013, 3),
+                        DateUtil.of(2013, 5))));
         Organization Luxoft = new Organization(
                 "Luxoft",
-                "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
+                "https://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                 List.of(new Period(
                         "",
                         "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'",
-                        LocalDate.of(2011, 3, 1),
-                        LocalDate.of(2011, 4, 1))));
+                        DateUtil.of(2011, 3),
+                        DateUtil.of(2011, 4))));
         Organization SiemensAG = new Organization(
                 "Siemens AG",
-                "http://www.siemens.ru/",
+                "https://www.siemens.ru/",
                 List.of(new Period(
                         "",
                         "3 месяца обучения мобильным IN сетям (Берлин)",
-                        LocalDate.of(2005, 1, 1),
-                        LocalDate.of(2005, 4, 1))));
+                        DateUtil.of(2005, 1),
+                        DateUtil.of(2005, 4))));
         List<Organization> organizations = new ArrayList<>();
         organizations.add(SiemensAG);
         organizations.add(Luxoft);
