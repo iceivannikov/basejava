@@ -137,7 +137,7 @@ public class ResumeTestData {
         Organization JavaOnlineProjects = new Organization(
                 "Java Online Projects",
                 "https://javaops.ru/",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "Автор проекта.",
                         "Создание, организация и проведение Java онлайн проектов и стажировок.",
                         DateUtil.of(2013,10),
@@ -145,7 +145,7 @@ public class ResumeTestData {
         Organization Wrike = new Organization(
                 "Wrike",
                 "https://www.wrike.com/",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "Старший разработчик (backend)",
                         "Проектирование и разработка онлайн платформы управления проектами Wrike " +
                                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
@@ -155,7 +155,7 @@ public class ResumeTestData {
         Organization RITCenter = new Organization(
                 "RIT Center",
                 " ",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "Java архитектор",
                         "Организация процесса разработки системы ERP для разных окружений: релизная " +
                                 "политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация " +
@@ -179,7 +179,7 @@ public class ResumeTestData {
         Organization Coursera = new Organization(
                 "Coursera",
                 "https://www.coursera.org/course/progfun",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "",
                         "'Functional Programming Principles in Scala' by Martin Odersky",
                         DateUtil.of(2013, 3),
@@ -187,7 +187,7 @@ public class ResumeTestData {
         Organization Luxoft = new Organization(
                 "Luxoft",
                 "https://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "",
                         "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'",
                         DateUtil.of(2011, 3),
@@ -195,7 +195,7 @@ public class ResumeTestData {
         Organization SiemensAG = new Organization(
                 "Siemens AG",
                 "https://www.siemens.ru/",
-                List.of(new Period(
+                List.of(new Organization.Period(
                         "",
                         "3 месяца обучения мобильным IN сетям (Берлин)",
                         DateUtil.of(2005, 1),
