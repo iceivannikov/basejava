@@ -1,5 +1,7 @@
 package com.ivannikov.webapp.model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -8,8 +10,9 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume  {
-
+public class Resume implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     // Unique identifier
     private final String uuid;
 
@@ -22,12 +25,14 @@ public class Resume  {
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
+
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
+
     public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");

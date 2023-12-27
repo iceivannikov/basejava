@@ -2,6 +2,8 @@ package com.ivannikov.webapp.model;
 
 import com.ivannikov.webapp.util.DateUtil;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,9 @@ import java.util.Objects;
 
 import static com.ivannikov.webapp.util.DateUtil.NOW;
 
-public class Organization {
+public class Organization implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String name;
     private String website;
     private List<Period> periods;
@@ -73,7 +77,9 @@ public class Organization {
                 '}';
     }
 
-    public static class Period {
+    public static class Period implements Serializable {
+        @Serial
+        private static final long serialVersionUID = 1L;
         private String name;
         private String description;
         private LocalDate startDate;

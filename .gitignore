@@ -4,3 +4,5 @@ out
 log
 lesson
 lib
+.DS_Store
+Storage/

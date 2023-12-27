@@ -1,7 +1,6 @@
 package com.ivannikov.webapp;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class MainFile {
     public static void main(String[] args) throws IOException {
@@ -20,6 +19,33 @@ public class MainFile {
         File dir = new File("./src/com/ivannikov/webapp");
         System.out.println("-".repeat(10) + "Print files directory: " + dir + "-".repeat(10));
         printFiles(dir);
+
+        File fileName = new File("/Users/viktor/IdeaProjects/basejava/Storage/text.txt");
+
+        //Строка, которая будет записана в файл
+        String data = "Some data to be written and read.\n";
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+            System.out.println("Write some data to file: " + fileName.getName());
+
+            // Несколько раз записать строку
+            for (int i = (int) (Math.random() * 10); --i >= 0; )
+                bw.write(data);
+            bw.close();
+
+            // Считываем результат
+            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            String s;
+            int count = 0;
+            System.out.println("Read data from file: " + fileName.getName());
+
+            // Считывать данные, отображая на экран
+            while ((s = br.readLine()) != null)
+                System.out.println("row " + ++count + " read: " + s);
+            br.close();
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
     }
 
     private static void printFiles(File directory) {
@@ -31,7 +57,7 @@ public class MainFile {
                     if (file.isDirectory()) {
                         printFiles(file);
                     } else {
-                        System.out.println("File: " + file);
+                        System.out.println("          File: " + file);
                     }
                 }
             }
