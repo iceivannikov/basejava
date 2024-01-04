@@ -12,27 +12,31 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     private final static Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
-    private final static Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid)
+    private final static Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName)
             .thenComparing(Resume::getUuid);
 
+    @Override
     public final void save(Resume resume) {
         LOG.info("Save " + resume);
         SK searchKey = getNotExistingSearchKey(resume.getUuid());
         doSave(resume, searchKey);
     }
 
+    @Override
     public final void update(Resume resume) {
         LOG.info("Update " + resume);
         SK searchKey = getExistingSearchKey(resume.getUuid());
         doUpdate(resume, searchKey);
     }
 
+    @Override
     public final Resume get(String uuid) {
         LOG.info("Get " + uuid);
         SK searchKey = getExistingSearchKey(uuid);
         return doGet(searchKey);
     }
 
+    @Override
     public final void delete(String uuid) {
         LOG.info("Delete " + uuid);
         SK searchKey = getExistingSearchKey(uuid);
