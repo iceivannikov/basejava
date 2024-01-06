@@ -11,7 +11,8 @@ import java.util.Objects;
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
 
-    protected AbstractFileStorage(File directory) {
+    protected AbstractFileStorage(String dir) {
+        directory = new File(dir);
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -19,7 +20,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         if (!directory.canRead() || !directory.canWrite()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
-        this.directory = directory;
     }
 
     public File getDirectory() {

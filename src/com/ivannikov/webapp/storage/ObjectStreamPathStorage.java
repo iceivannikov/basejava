@@ -6,10 +6,16 @@ import com.ivannikov.webapp.model.Resume;
 import java.io.*;
 
 public class ObjectStreamPathStorage extends AbstractPathStorage {
-    protected ObjectStreamPathStorage(String directory) {
+
+    private final SerializationStrategy<Resume> serializationStrategy;
+    protected ObjectStreamPathStorage(String directory, SerializationStrategy<Resume> serializationStrategy) {
         super(directory);
+        this.serializationStrategy = serializationStrategy;
     }
 
+    public SerializationStrategy<Resume> getSerializationStrategy() {
+        return serializationStrategy;
+    }
     @Override
     protected void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
