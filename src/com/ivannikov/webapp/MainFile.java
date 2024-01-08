@@ -1,9 +1,26 @@
 package com.ivannikov.webapp;
 
+import com.ivannikov.webapp.model.Resume;
+
 import java.io.*;
 
 public class MainFile {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        byte[] byteArray = new byte[255];
+        Resume resume = new Resume("saasasa");
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+            oos.writeObject(resume);
+            byteArray = bos.toByteArray();
+//            for (byte b : byteArray) {
+//                System.out.print((char) b);
+//            }
+        }
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
+             ObjectInputStream ois = new ObjectInputStream(bis)) {
+            System.out.println(ois.readObject());
+        }
+
 //        File file = new File("/Users/viktor/IdeaProjects/basejava/.gitignore");
 //        System.out.println("Canonical path: " + file.getCanonicalFile());
 //        System.out.println("Absolute path: " + file.getAbsoluteFile());

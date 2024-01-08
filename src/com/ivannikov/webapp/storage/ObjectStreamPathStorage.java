@@ -1,30 +1,25 @@
 package com.ivannikov.webapp.storage;
 
+
 import com.ivannikov.webapp.exception.StorageException;
 import com.ivannikov.webapp.model.Resume;
 
 import java.io.*;
 
 public class ObjectStreamPathStorage extends AbstractPathStorage {
-
-    private final SerializationStrategy<Resume> serializationStrategy;
-    protected ObjectStreamPathStorage(String directory, SerializationStrategy<Resume> serializationStrategy) {
+    protected ObjectStreamPathStorage(String directory) {
         super(directory);
-        this.serializationStrategy = serializationStrategy;
     }
 
-    public SerializationStrategy<Resume> getSerializationStrategy() {
-        return serializationStrategy;
-    }
     @Override
-    protected void doWrite(Resume resume, OutputStream outputStream) throws IOException {
+    public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(resume);
         }
     }
 
     @Override
-    protected Resume doRead(InputStream inputStream) throws IOException {
+    public Resume doRead(InputStream inputStream) throws IOException {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
             return (Resume) objectInputStream.readObject();
         } catch (ClassNotFoundException e) {

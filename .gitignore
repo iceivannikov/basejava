@@ -6,4 +6,4 @@ lesson
 lib
 .DS_Store
 Storage/
-tempDir
+TempDir/
