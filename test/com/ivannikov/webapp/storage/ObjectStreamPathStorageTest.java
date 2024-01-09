@@ -1,6 +1,7 @@
 package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.model.Resume;
+import com.ivannikov.webapp.storage.serialization.FileSystemSerializationStrategy;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -20,7 +21,7 @@ public class ObjectStreamPathStorageTest {
     public void objectStreamPathStorage() throws IOException {
         Path path = Paths.get(TEMP_DIR);
         Files.createDirectory(path);
-        AbstractPathStorage tempDir = new ObjectStreamPathStorage(TEMP_DIR);
+        PathStorage tempDir = new PathStorage(TEMP_DIR, new FileSystemSerializationStrategy());
 
         tempDir.save(RESUME_1);
         tempDir.save(RESUME_2);

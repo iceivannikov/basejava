@@ -1,6 +1,5 @@
 package com.ivannikov.webapp.storage;
 
-import com.ivannikov.webapp.storage.serialization.FileSystemSaverTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -11,9 +10,8 @@ import org.junit.runners.Suite;
         ListStorageTest.class,
         MapUuidStorageTest.class,
         MapResumeStorageTest.class,
-        AbstractFileStorageTest.class,
-        AbstractPathStorageTest.class,
-        FileSystemSaverTest.class,
+        FileStorageTest.class,
+        PathStorageTest.class,
         ObjectStreamPathStorageTest.class,
         ObjectStreamFileStorageTest.class
 })

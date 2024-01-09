@@ -1,9 +1,14 @@
 package com.ivannikov.webapp.storage.serialization;
 
+import com.ivannikov.webapp.model.Resume;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public interface Strategy {
 
-    byte[] serialize(Object object) throws IOException;
-    Object deserialize(byte[] data) throws IOException;
+    void doWrite(Resume resume, OutputStream os) throws IOException;
+
+    Resume doRead(InputStream is) throws IOException;
 }

@@ -1,6 +1,7 @@
 package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.model.Resume;
+import com.ivannikov.webapp.storage.serialization.FileSystemSerializationStrategy;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,7 +17,7 @@ public class ObjectStreamFileStorageTest {
         File tempDirectory = new File(TEMP_DIR);
         //noinspection ResultOfMethodCallIgnored
         tempDirectory.mkdir();
-        AbstractFileStorage tempDir = new ObjectStreamFileStorage(TEMP_DIR);
+        FileStorage tempDir = new FileStorage(TEMP_DIR, new FileSystemSerializationStrategy());
 
         tempDir.clear();
 
