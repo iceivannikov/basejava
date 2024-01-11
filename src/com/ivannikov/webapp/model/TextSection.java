@@ -8,6 +8,9 @@ public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
     private String textSection;
 
+    public TextSection() {
+    }
+
     public TextSection(String textSection) {
         Objects.requireNonNull(textSection, "textSection must not be null");
         this.textSection = textSection;

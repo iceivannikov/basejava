@@ -11,6 +11,9 @@ public class ListSection extends Section {
     private static final long serialVersionUID = 1L;
     private List<String> listSections;
 
+    public ListSection() {
+    }
+
     public ListSection(String... items) {
         this(Arrays.asList(items));
     }
