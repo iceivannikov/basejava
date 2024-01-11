@@ -39,7 +39,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("Couldn't create Path " + path.toAbsolutePath(), path.getFileName().toString(), e);
+            throw new StorageException("Couldn't create path " + path, getFileName(path), e);
         }
         doUpdate(resume, path);
     }
@@ -47,18 +47,18 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            strategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(path.toString())));
+            strategy.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("Path write error ", path.getFileName().toString(), e);
+            throw new StorageException("Path write error ", getFileName(path), e);
         }
     }
 
     @Override
     protected Resume doGet(Path path) {
         try {
-            return strategy.doRead(new BufferedInputStream(new FileInputStream(path.toString())));
+            return strategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("Path read error ", path.getFileName().toString(), e);
+            throw new StorageException("Path read error ", getFileName(path), e);
         }
     }
 
@@ -67,13 +67,13 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", null, e);
+            throw new StorageException("Path delete error", e);
         }
     }
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return Paths.get(directory.toString()).resolve(uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
@@ -108,8 +108,12 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory error", null, e);
+            throw new StorageException("Directory error", e);
         }
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
     }
 }
 
