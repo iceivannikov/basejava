@@ -5,6 +5,6 @@ import com.ivannikov.webapp.storage.serialization.FileSystemSerializationStrateg
 public class PathStorageTest extends AbstractStorageTest {
 
     public PathStorageTest() {
-        super(new PathStorage(STORAGE_DIR.toString(), new FileSystemSerializationStrategy()));
+        super(new PathStorage(STORAGE_DIR, new FileSystemSerializationStrategy()));
     }
 }

@@ -7,15 +7,13 @@ import com.ivannikov.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final String TEMP_DIR = "/Users/viktor/IdeaProjects/basejava/TempDir";
-    protected static final File STORAGE_DIR = new File("/Users/viktor/IdeaProjects/basejava/Storage");
+    protected static final String STORAGE_DIR = "/Users/viktor/IdeaProjects/basejava/Storage";
     protected final Storage storage;
 
     private final static String UUID_1 = "uuid1";
@@ -112,43 +110,6 @@ public abstract class AbstractStorageTest {
     public void size() {
         assertSize(3);
     }
-
-//    @Test
-//    public void objectStreamPathStorageTest() throws IOException {
-//        Path path = Paths.get(TEMP_DIR);
-//        Files.createDirectory(path);
-//        AbstractPathStorage tempDir = new ObjectStreamPathStorage(TEMP_DIR);
-//
-//        tempDir.save(RESUME_1);
-//        tempDir.save(RESUME_2);
-//
-//        Resume loadedResume1 = tempDir.get(UUID_1);
-//        Resume loadedResume2 = tempDir.get(UUID_2);
-//
-//        Assertions.assertEquals(RESUME_1, loadedResume1);
-//        Assertions.assertEquals(RESUME_2, loadedResume2);
-//
-//        cleanUpDirectory(path);
-//    }
-
-//    @Test
-//    public void objectStreamFileStorageTest() {
-//        File tempDirectory = new File(TEMP_DIR);
-//        //noinspection ResultOfMethodCallIgnored
-//        tempDirectory.mkdir();
-//        AbstractFileStorage tempDir = new ObjectStreamFileStorage(TEMP_DIR);
-//
-//        tempDir.save(RESUME_1);
-//        tempDir.save(RESUME_2);
-//
-//        Resume loadedResume1 = tempDir.get(UUID_1);
-//        Resume loadedResume2 = tempDir.get(UUID_2);
-//
-//        Assertions.assertEquals(RESUME_1, loadedResume1);
-//        Assertions.assertEquals(RESUME_2, loadedResume2);
-//
-//        cleanUpDirectory(tempDirectory);
-//    }
 
     private void assertGet(Resume resume) {
         assertEquals(resume, storage.get(resume.getUuid()));

@@ -23,6 +23,14 @@ public class ResumeTestData {
         return new Resume(uuid, name, getContacts(), getSections());
     }
 
+    public static Resume newResume(String uuid, String name,
+                                   Map<ContactType, String> contacts,
+                                   Map<SectionType, Section> sections) {
+        contacts = getContacts();
+        sections = getSections();
+        return new Resume(uuid, name, contacts, sections);
+    }
+
     private static void printResume(Resume resume) {
         String fullName = resume.getFullName();
         System.out.println(fullName);
