@@ -3,7 +3,9 @@ package com.ivannikov.webapp.storage;
 import com.ivannikov.webapp.ResumeTestData;
 import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.NotExistStorageException;
+import com.ivannikov.webapp.model.ContactType;
 import com.ivannikov.webapp.model.Resume;
+import com.ivannikov.webapp.model.SectionType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +32,27 @@ public abstract class AbstractStorageTest {
     private final static Resume RESUME_2 = ResumeTestData.newResume(UUID_2, NAME_2);
     private final static Resume RESUME_3 = ResumeTestData.newResume(UUID_3, NAME_3);
     private final static Resume RESUME_4 = ResumeTestData.newResume(UUID_4, NAME_4);
+
+    static {
+        RESUME_1.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_1.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_1.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+        RESUME_1.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+
+        RESUME_2.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_2.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_2.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+        RESUME_2.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+        RESUME_2.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
+
+        RESUME_3.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_3.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_3.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+        RESUME_3.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+        RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
+        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
+        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

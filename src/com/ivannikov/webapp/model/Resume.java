@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,9 +23,9 @@ public class Resume implements Serializable {
 
     private String fullName;
 
-    private Map<ContactType, String> contacts;
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
-    private Map<SectionType, Section> sections;
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
     }
@@ -41,15 +41,6 @@ public class Resume implements Serializable {
         this.fullName = fullName;
     }
 
-    public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> sections) {
-        Objects.requireNonNull(uuid, "uuid must not be null");
-        Objects.requireNonNull(fullName, "fullName must not be null");
-        this.uuid = uuid;
-        this.fullName = fullName;
-        this.contacts = contacts;
-        this.sections = sections;
-    }
-
     public String getUuid() {
         return uuid;
     }
@@ -59,11 +50,11 @@ public class Resume implements Serializable {
     }
 
     public Map<SectionType, Section> getSections() {
-        return new HashMap<>(sections);
+        return new EnumMap<>(sections);
     }
 
     public Map<ContactType, String> getContacts() {
-        return new HashMap<>(contacts);
+        return new EnumMap<>(contacts);
     }
 
     public String getContact(ContactType type) {

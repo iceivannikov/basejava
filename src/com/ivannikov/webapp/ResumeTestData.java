@@ -10,25 +10,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
+
+    private ResumeTestData() {
+    }
+
     public static void main(String[] args) {
-        Map<ContactType, String> contacts = getContacts();
 
-        Map<SectionType, Section> sections = getSections();
-
-        Resume resume = new Resume("1", "Григорий Кислин", contacts, sections);
+        Resume resume = new Resume("1", "Григорий Кислин");
         printResume(resume);
     }
 
     public static Resume newResume(String uuid, String name) {
-        return new Resume(uuid, name, getContacts(), getSections());
-    }
-
-    public static Resume newResume(String uuid, String name,
-                                   Map<ContactType, String> contacts,
-                                   Map<SectionType, Section> sections) {
-        contacts = getContacts();
-        sections = getSections();
-        return new Resume(uuid, name, contacts, sections);
+        return new Resume(uuid, name);
     }
 
     private static void printResume(Resume resume) {
@@ -52,7 +45,7 @@ public class ResumeTestData {
         }
     }
 
-    private static Map<ContactType, String> getContacts() {
+    public static void getContacts() {
         Map<ContactType, String> contacts = new HashMap<>();
         contacts.put(ContactType.TELEPHONE, "+7(921) 855-0482");
         contacts.put(ContactType.SKYPE, "skype:grigory.kislin");
@@ -61,109 +54,105 @@ public class ResumeTestData {
         contacts.put(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
         contacts.put(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         contacts.put(ContactType.WEBSITE, "https://gkislin.ru/");
-        return contacts;
     }
 
     private static Map<SectionType, Section> getSections() {
-        Section achievementsSection = new ListSection(getAchievementsList());
-        Section qualificationSection = new ListSection(getQualificationList());
-        OrganizationSection organizationJob = new OrganizationSection(getOrganizationsJob());
-        OrganizationSection organizationStudies = new OrganizationSection(getOrganizationsStudies());
         Map<SectionType, Section> sections = new HashMap<>();
         sections.put(SectionType.OBJECTIVE, getPersonalQualities());
         sections.put(SectionType.PERSONAL, getPosition());
-        sections.put(SectionType.ACHIEVEMENT, achievementsSection);
-        sections.put(SectionType.QUALIFICATIONS, qualificationSection);
-        sections.put(SectionType.EXPERIENCE, organizationJob);
-        sections.put(SectionType.EDUCATION, organizationStudies);
+        sections.put(SectionType.ACHIEVEMENT, getAchievementsList());
+        sections.put(SectionType.QUALIFICATIONS, getQualificationList());
+        sections.put(SectionType.EXPERIENCE, getOrganizationsJob());
+        sections.put(SectionType.EDUCATION, getOrganizationsStudies());
         return sections;
     }
 
-    private static TextSection getPersonalQualities() {
+    public static TextSection getPersonalQualities() {
         return new TextSection("""
                 Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям""");
     }
 
-    private static TextSection getPosition() {
+    public static TextSection getPosition() {
         return new TextSection("""
                 Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.""");
     }
 
-    private static List<String> getAchievementsList() {
-        List<String> achievementsList = new ArrayList<>();
-        achievementsList.add("""
+    public static ListSection getAchievementsList() {
+        List<String> list = new ArrayList<>();
+        list.add("""
                 Организация команды и успешная реализация Java проектов для сторонних заказчиков:\s
                 приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей\s
                 спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin\s
                 проект для комплексных DIY смет""");
-        achievementsList.add("""
+        list.add("""
                 С 2013 года: разработка проектов "Разработка Web приложения","Java Enterprise",\s
                 "Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP).\s
                 Удаленное взаимодействие (JMS/AKKA)". Организация онлайн стажировок и ведение проектов.\s
                 Более 3500 выпускников.""");
-        achievementsList.add("""
+        list.add("""
                 Реализация двухфакторной аутентификации для онлайн платформы управления проектами\s
                 Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.""");
-        achievementsList.add("""
+        list.add("""
                 Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM.\s
                 Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке:\s
                 Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция\s
                  CIFS/SMB java сервера.""");
-        achievementsList.add("""
+        list.add("""
                 Реализация c нуля Rich Internet Application приложения на стеке технологий JPA,\s
                 Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.""");
-        achievementsList.add("""
+        list.add("""
                 Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных\s
                 сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации\s
                 о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и \s
                 мониторинга системы по JMX (Jython/ Django).""");
-        achievementsList.add("""
+        list.add("""
                 Реализация протоколов по приему платежей всех основных платежных системы России\s
                 (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.""");
-        return achievementsList;
+        return new ListSection(list);
     }
 
-    private static List<String> getQualificationList() {
-        List<String> qualificationList = new ArrayList<>();
-        qualificationList.add("""
+    public static ListSection getQualificationList() {
+        List<String> list = new ArrayList<>();
+        list.add("""
                 JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2""");
-        qualificationList.add("""
+        list.add("""
                 Version control: Subversion, Git, Mercury, ClearCase, Perforce""");
-        qualificationList.add("""
+        list.add("""
                 DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL,\s
                 SQLite, MS SQL, HSQLDB""");
-        qualificationList.add("""
+        list.add("""
                 Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy""");
-        qualificationList.add("""
+        list.add("""
                 XML/XSD/XSLT, SQL, C/C++, Unix shell scripts""");
-        qualificationList.add("""
+        list.add("""
                 Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, Spring\s
                 (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, GWT(SmartGWT, ExtGWT/GXT),\s
                 Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium (htmlelements).""");
-        qualificationList.add("""
+        list.add("""
                 Python: Django.""");
-        qualificationList.add("""
+        list.add("""
                 JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js""");
-        qualificationList.add("""
+        list.add("""
                 Scala: SBT, Play2, Specs2, Anorm, Spray, Akka""");
-        qualificationList.add("""
+        list.add("""
                 Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, JAXB, StAX,\s
                 SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, Commet, HTML5, ESB, CMIS, BPMN2,\s
                 LDAP, OAuth1, OAuth2, JWT.""");
-        qualificationList.add("""
+        list.add("""
                 Инструменты: Maven + plugin development, Gradle, настройка Nginx""");
-        qualificationList.add("""
+        list.add("""
                 администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway,\s
                 Nagios, iReport, OpenCmis, Bonita, pgBouncer""");
-        qualificationList.add("""
+        list.add("""
                 Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектирования,\s
                 архитектурных шаблонов, UML, функционального программирования.""");
-        qualificationList.add("""
+        list.add("""
                 Родной русский, английский "upper intermediate".""");
-        return qualificationList;
+
+        return new ListSection(list);
     }
 
-    private static List<Organization> getOrganizationsJob() {
+    public static OrganizationSection getOrganizationsJob() {
         Organization JavaOnlineProjects = new Organization(
                 "Java Online Projects",
                 "https://javaops.ru/",
@@ -205,10 +194,10 @@ public class ResumeTestData {
         organizations.add(RITCenter);
         organizations.add(Wrike);
         organizations.add(JavaOnlineProjects);
-        return organizations;
+        return new OrganizationSection(organizations);
     }
 
-    private static List<Organization> getOrganizationsStudies() {
+    public static OrganizationSection getOrganizationsStudies() {
         Organization Coursera = new Organization(
                 "Coursera",
                 "https://www.coursera.org/course/progfun",
@@ -240,6 +229,6 @@ public class ResumeTestData {
         organizations.add(SiemensAG);
         organizations.add(Luxoft);
         organizations.add(Coursera);
-        return organizations;
+        return new OrganizationSection(organizations);
     }
 }
