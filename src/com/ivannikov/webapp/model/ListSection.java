@@ -1,5 +1,8 @@
 package com.ivannikov.webapp.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,5 +52,23 @@ public class ListSection extends Section {
     @Override
     public String toString() {
         return listSections.toString();
+    }
+
+    @Override
+    public void serialize(DataOutputStream dos) throws IOException {
+        dos.writeInt(listSections.size());
+        for (String section : listSections) {
+            dos.writeUTF(section);
+        }
+    }
+
+    @Override
+    public ListSection deserialize(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        listSections = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            listSections.add(dis.readUTF());
+        }
+        return new ListSection(listSections);
     }
 }
