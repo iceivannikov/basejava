@@ -1,8 +1,5 @@
 package com.ivannikov.webapp.model;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.Serial;
 import java.util.Objects;
 
@@ -45,15 +42,5 @@ public class TextSection extends Section {
     @Override
     public String toString() {
         return textSection;
-    }
-
-    @Override
-    public void serialize(DataOutputStream dos) throws IOException {
-        dos.writeUTF(textSection);
-    }
-
-    @Override
-    public TextSection deserialize(DataInputStream dis) throws IOException {
-        return new TextSection(dis.readUTF());
     }
 }
