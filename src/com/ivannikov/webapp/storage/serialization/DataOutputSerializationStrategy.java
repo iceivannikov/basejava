@@ -1,10 +1,12 @@
 package com.ivannikov.webapp.storage.serialization;
 
+import com.ivannikov.webapp.exception.StorageException;
 import com.ivannikov.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -34,30 +36,35 @@ public class DataOutputSerializationStrategy implements Strategy {
         }
     }
 
-    private void serializeContact(DataOutputStream dos, Map<ContactType, String> contacts) throws IOException {
-        dos.writeInt(contacts.size());
-        for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-            dos.writeUTF(entry.getKey().name());
-            dos.writeUTF(entry.getValue());
+    private <T, U> void writeWithException(Collection<T> collection,
+                                           U dos,
+                                           StorageBiConsumer<T, U> action) throws IOException {
+        ((DataOutputStream) dos).writeInt(collection.size());
+        for (T item : collection) {
+            action.accept(item, dos);
         }
+    }
+
+    private void serializeContact(DataOutputStream dos, Map<ContactType, String> contacts) throws IOException {
+        writeWithException(contacts.entrySet(), dos, (entry, d) -> {
+            d.writeUTF(entry.getKey().name());
+            d.writeUTF(entry.getValue());
+        });
     }
 
     private void serializeSection(DataOutputStream dos, Map<SectionType, Section> sections) throws IOException {
-        dos.writeInt(sections.size());
-        for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-            SectionType sectionType = entry.getKey();
-            dos.writeUTF(sectionType.name());
-            serializeSection(entry.getValue(), dos);
-        }
+        writeWithException(sections.entrySet(), dos, (entry, d) -> {
+            d.writeUTF(entry.getKey().name());
+            serializeSection(entry.getValue(), d);
+        });
     }
 
     private void serializeSection(Section section, DataOutputStream dos) throws IOException {
-        if (section instanceof TextSection textSection) {
-            serializeTextSection(textSection, dos);
-        } else if (section instanceof ListSection listSection) {
-            serializeListSection(listSection, dos);
-        } else if (section instanceof OrganizationSection organizationSection) {
-            serializeOrganization(organizationSection, dos);
+        switch (section) {
+            case TextSection textSection -> serializeTextSection(textSection, dos);
+            case ListSection listSection -> serializeListSection(listSection, dos);
+            case OrganizationSection organizationSection -> serializeOrganization(organizationSection, dos);
+            case null, default -> throw new StorageException("Unexpected value: " + section);
         }
     }
 
