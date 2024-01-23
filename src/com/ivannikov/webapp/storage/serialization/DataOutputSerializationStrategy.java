@@ -36,26 +36,26 @@ public class DataOutputSerializationStrategy implements Strategy {
         }
     }
 
-    private <T, U> void writeWithException(Collection<T> collection,
-                                           U dos,
-                                           StorageBiConsumer<T, U> action) throws IOException {
-        ((DataOutputStream) dos).writeInt(collection.size());
+    private <T> void writeWithException(Collection<T> collection,
+                                        DataOutputStream dos,
+                                        StorageBiConsumer<T> action) throws IOException {
+        dos.writeInt(collection.size());
         for (T item : collection) {
-            action.accept(item, dos);
+            action.accept(item);
         }
     }
 
     private void serializeContact(DataOutputStream dos, Map<ContactType, String> contacts) throws IOException {
-        writeWithException(contacts.entrySet(), dos, (entry, d) -> {
-            d.writeUTF(entry.getKey().name());
-            d.writeUTF(entry.getValue());
+        writeWithException(contacts.entrySet(), dos, entry -> {
+            dos.writeUTF(entry.getKey().name());
+            dos.writeUTF(entry.getValue());
         });
     }
 
     private void serializeSection(DataOutputStream dos, Map<SectionType, Section> sections) throws IOException {
-        writeWithException(sections.entrySet(), dos, (entry, d) -> {
-            d.writeUTF(entry.getKey().name());
-            serializeSection(entry.getValue(), d);
+        writeWithException(sections.entrySet(), dos, entry -> {
+            dos.writeUTF(entry.getKey().name());
+            serializeSection(entry.getValue(), dos);
         });
     }
 
