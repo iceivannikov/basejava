@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,11 +22,13 @@ public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private String website;
-    private List<Period> periods;
+    private List<Period> periods = new ArrayList<>();
 
     public Organization() {
     }
-
+    public Organization(String name, String website, Period... periods) {
+        this(name, website, Arrays.asList(periods));
+    }
     public Organization(String name, String website, List<Period> periods) {
         this.name = name;
         this.website = website;

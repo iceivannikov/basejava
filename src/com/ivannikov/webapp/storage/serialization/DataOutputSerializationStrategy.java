@@ -5,10 +5,7 @@ import com.ivannikov.webapp.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataOutputSerializationStrategy implements Strategy {
 
@@ -38,7 +35,7 @@ public class DataOutputSerializationStrategy implements Strategy {
 
     private <T> void writeWithException(Collection<T> collection,
                                         DataOutputStream dos,
-                                        StorageBiConsumer<T> action) throws IOException {
+                                        StorageConsumer<T> action) throws IOException {
         dos.writeInt(collection.size());
         for (T item : collection) {
             action.accept(item);
@@ -73,46 +70,43 @@ public class DataOutputSerializationStrategy implements Strategy {
     }
 
     private void serializeListSection(ListSection section, DataOutputStream dos) throws IOException {
-        List<String> list = section.getListSections();
-        dos.writeInt(list.size());
-        for (String string : list) {
-            dos.writeUTF(string);
-        }
+        writeWithException(section.getListSections(), dos, dos::writeUTF);
     }
 
     private void serializeOrganization(OrganizationSection section, DataOutputStream dos) throws IOException {
-        List<Organization> list = section.getOrganizations();
-        dos.writeInt(list.size());
-        for (Organization organization : list) {
+        writeWithException(section.getOrganizations(), dos, organization -> {
             dos.writeUTF(organization.getName());
             dos.writeUTF(organization.getWebsite());
-            dos.writeInt(organization.getPeriods().size());
-            List<Organization.Period> periods = organization.getPeriods();
-            for (Organization.Period period : periods) {
+            writeWithException(organization.getPeriods(), dos, period -> {
                 dos.writeUTF(period.getName());
                 dos.writeUTF(period.getDescription());
                 dos.writeUTF(period.getStartDate().toString());
                 dos.writeUTF(period.getEndDate().toString());
-            }
+            });
+        });
+    }
+
+    private void readWithException(DataInputStream dis, StorageConsumer<DataInputStream> action) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            action.accept(dis);
         }
     }
 
     private void deserializeContacts(DataInputStream dis, Resume resume) throws IOException {
-        int contactSize = dis.readInt();
-        for (int i = 0; i < contactSize; i++) {
+        readWithException(dis, d -> {
             ContactType contactType = ContactType.valueOf(dis.readUTF());
             String value = dis.readUTF();
             resume.addContact(contactType, value);
-        }
+        });
     }
 
     private void deserializeSections(DataInputStream dis, Resume resume) throws IOException {
-        int size = dis.readInt();
-        for (int i = 0; i < size; i++) {
+        readWithException(dis, d -> {
             SectionType sectionType = SectionType.valueOf(dis.readUTF());
             Section section = deserializeSection(sectionType, dis);
             resume.addSection(sectionType, section);
-        }
+        });
     }
 
     private Section deserializeSection(SectionType sectionType, DataInputStream dis) throws IOException {
@@ -128,37 +122,27 @@ public class DataOutputSerializationStrategy implements Strategy {
     }
 
     private ListSection deserializeListSection(DataInputStream dis) throws IOException {
-        int size = dis.readInt();
-        List<String> listSections = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            listSections.add(dis.readUTF());
-        }
+        List<String> listSections = new ArrayList<>();
+        readWithException(dis, d -> listSections.add(dis.readUTF()));
         return new ListSection(listSections);
     }
 
     private OrganizationSection deserializeOrganizationSection(DataInputStream dis) throws IOException {
-        int sizeOrganizationSection = dis.readInt();
         List<Organization> organizations = new ArrayList<>();
-        List<Organization.Period> periods = null;
-        Organization.Period period;
-        for (int i = 0; i < sizeOrganizationSection; i++) {
+        readWithException(dis, d -> {
             String name = dis.readUTF();
             String website = dis.readUTF();
-            int sizePeriod = dis.readInt();
-            for (int j = 0; j < sizePeriod; j++) {
-                String periodName = dis.readUTF();
-                String description = dis.readUTF();
-                String startDate = dis.readUTF();
-                String endDate = dis.readUTF();
+            readWithException(d, dataInputStream -> {
+                String periodName = d.readUTF();
+                String description = d.readUTF();
+                String startDate = d.readUTF();
+                String endDate = d.readUTF();
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
-                period = new Organization.Period(periodName, description, start, end);
-                periods = new ArrayList<>();
-                periods.add(period);
-            }
-            Organization organization = new Organization(name, website, periods);
-            organizations.add(organization);
-        }
+                Organization.Period period = new Organization.Period(periodName, description, start, end);
+                organizations.add(new Organization(name, website, period));
+            });
+        });
         return new OrganizationSection(organizations);
     }
 }
