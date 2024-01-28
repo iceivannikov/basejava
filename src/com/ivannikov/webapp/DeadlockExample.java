@@ -6,36 +6,30 @@ public class DeadlockExample {
 
     public static void main(String[] args) {
         DeadlockExample deadlock = new DeadlockExample();
-        new Thread(deadlock::operation1, "Thread_1").start();
-        new Thread(deadlock::operation2, "Thread_2").start();
+
+        new Thread(deadlock::operation1).start();
+        new Thread(deadlock::operation2).start();
     }
 
-    private void operation1() {
-        synchronized (lock1) {
-            System.out.println("lock1 acquired, waiting to acquire lock2");
+    public void operation1() {
+        operation(lock1, lock2, "executing first operation");
+    }
+
+    public void operation2() {
+        operation(lock2, lock1, "executing second operation");
+    }
+
+    private void operation(Object firstLock, Object secondLock, String message) {
+        synchronized (firstLock) {
+            System.out.println(firstLock + " acquired, waiting to acquire " + secondLock);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            synchronized (lock2) {
-                System.out.println("lock2 acquired");
-                System.out.println("executing first operation");
-            }
-        }
-    }
-
-    private void operation2() {
-        synchronized (lock2) {
-            System.out.println("lock2 acquired, waiting to acquire lock1");
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            synchronized (lock1) {
-                System.out.println("lock1 acquired");
-                System.out.println("executing first operation");
+            synchronized (secondLock) {
+                System.out.println(secondLock + " acquired");
+                System.out.println(message);
             }
         }
     }
