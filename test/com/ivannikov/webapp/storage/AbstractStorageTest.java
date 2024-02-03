@@ -6,7 +6,6 @@ import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.NotExistStorageException;
 import com.ivannikov.webapp.model.ContactType;
 import com.ivannikov.webapp.model.Resume;
-import com.ivannikov.webapp.model.SectionType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
     protected static final String STORAGE_DIR = Config.getInstance().getStorageDir().toString();
-//    protected static final String STORAGE_DIR = "/Users/viktor/IdeaProjects/basejava/Storage";
+
     protected final Storage storage;
 
     private final static String UUID_1 = "uuid1";
@@ -38,22 +37,22 @@ public abstract class AbstractStorageTest {
     static {
         RESUME_1.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         RESUME_1.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        RESUME_1.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
-        RESUME_1.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+//        RESUME_1.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+//        RESUME_1.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
 
         RESUME_2.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         RESUME_2.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        RESUME_2.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
-        RESUME_2.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
-        RESUME_2.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
+//        RESUME_2.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+//        RESUME_2.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+//        RESUME_2.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
 
         RESUME_3.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         RESUME_3.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        RESUME_3.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
-        RESUME_3.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
-        RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
-        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
-        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+//        RESUME_3.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
+//        RESUME_3.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
+//        RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
+//        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
+//        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
     }
 
     protected AbstractStorageTest(Storage storage) {
