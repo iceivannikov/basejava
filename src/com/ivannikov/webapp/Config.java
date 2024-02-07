@@ -2,6 +2,7 @@ package com.ivannikov.webapp;
 
 import com.ivannikov.webapp.storage.SqlStorage;
 import com.ivannikov.webapp.storage.Storage;
+import com.ivannikov.webapp.util.SqlHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,10 +25,11 @@ public class Config {
             Properties props = new Properties();
             props.load(is);
             storageDir = new File(props.getProperty("storage.dir"));
-            storage = new SqlStorage(
+            storage = new SqlStorage(new SqlHelper(
                     props.getProperty("db.url"),
                     props.getProperty("db.user"),
-                    props.getProperty("db.password"));
+                    props.getProperty("db.password")
+            ));
         } catch (IOException e) {
             throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
         }

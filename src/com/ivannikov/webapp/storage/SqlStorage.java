@@ -3,27 +3,26 @@ package com.ivannikov.webapp.storage;
 import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.NotExistStorageException;
 import com.ivannikov.webapp.model.Resume;
-import com.ivannikov.webapp.sql.ConnectionFactory;
 import com.ivannikov.webapp.sql.SqlExecutor;
 import com.ivannikov.webapp.util.SqlHelper;
 
-import java.sql.*;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
 
-    private final ConnectionFactory factory;
+    private final SqlHelper sqlHelper;
 
-    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        factory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    public SqlStorage(SqlHelper sqlHelper) {
+        this.sqlHelper = sqlHelper;
     }
 
     @Override
     public void clear() {
         //noinspection SqlWithoutWhere
         String sql = "DELETE FROM resume";
-        SqlHelper.getPreparedStatement(factory, sql, (ps) -> {
+        sqlHelper.getPreparedStatement(sql, (ps) -> {
             ps.execute();
             return null;
         });
@@ -41,7 +40,7 @@ public class SqlStorage implements Storage {
             return null;
         };
         String sql = "INSERT INTO resume (uuid, full_name) VALUES (?,?)";
-        SqlHelper.getPreparedStatement(factory, sql, executor);
+        sqlHelper.getPreparedStatement(sql, executor);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class SqlStorage implements Storage {
             return null;
         };
         String sql = "UPDATE resume SET full_name = ? WHERE uuid = ?";
-        SqlHelper.getPreparedStatement(factory, sql, executor);
+        sqlHelper.getPreparedStatement(sql, executor);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class SqlStorage implements Storage {
             return new Resume(uuid, rs.getString("full_name"));
         };
         String sql = "SELECT * FROM resume WHERE uuid=?";
-        return SqlHelper.getPreparedStatement(factory, sql, executor);
+        return sqlHelper.getPreparedStatement(sql, executor);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class SqlStorage implements Storage {
             return null;
         };
         String sql = "DELETE FROM resume WHERE uuid=?";
-        SqlHelper.getPreparedStatement(factory, sql, executor);
+        sqlHelper.getPreparedStatement(sql, executor);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class SqlStorage implements Storage {
             return resumes;
         };
         String sql = "SELECT uuid, full_name FROM resume";
-        return SqlHelper.getPreparedStatement(factory, sql, executor);
+        return sqlHelper.getPreparedStatement(sql, executor);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class SqlStorage implements Storage {
             return size[0];
         };
         String sql = "SELECT COUNT(*) FROM resume";
-        return SqlHelper.getPreparedStatement(factory, sql, executor);
+        return sqlHelper.getPreparedStatement(sql, executor);
     }
 
     private boolean resumeExists(String uuid) {
@@ -127,6 +126,6 @@ public class SqlStorage implements Storage {
             return rowCount > 0;
         };
         String sql = "SELECT COUNT(*) FROM resume WHERE uuid = ?";
-        return SqlHelper.getPreparedStatement(factory, sql, executor);
+        return sqlHelper.getPreparedStatement(sql, executor);
     }
 }
