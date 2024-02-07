@@ -2,7 +2,7 @@ package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.exception.NotExistStorageException;
 import com.ivannikov.webapp.model.Resume;
-import com.ivannikov.webapp.util.SqlHelper;
+import com.ivannikov.webapp.sql.SqlHelper;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

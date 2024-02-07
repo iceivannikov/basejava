@@ -1,9 +1,7 @@
-package com.ivannikov.webapp.util;
+package com.ivannikov.webapp.sql;
 
 import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.StorageException;
-import com.ivannikov.webapp.sql.ConnectionFactory;
-import com.ivannikov.webapp.sql.SqlExecutor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,6 +32,6 @@ public class SqlHelper {
     }
 
     private boolean isDuplicateKeyError(SQLException e) {
-        return e.getSQLState().startsWith("23") && e.getMessage().contains("duplicate key");
+        return "23505".equals(e.getSQLState());
     }
 }

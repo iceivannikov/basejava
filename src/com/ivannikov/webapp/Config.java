@@ -2,7 +2,7 @@ package com.ivannikov.webapp;
 
 import com.ivannikov.webapp.storage.SqlStorage;
 import com.ivannikov.webapp.storage.Storage;
-import com.ivannikov.webapp.util.SqlHelper;
+import com.ivannikov.webapp.sql.SqlHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
