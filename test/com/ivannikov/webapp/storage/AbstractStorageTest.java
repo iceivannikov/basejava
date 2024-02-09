@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,10 +19,10 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    private final static String UUID_1 = "uuid1";
-    private final static String UUID_2 = "uuid2";
-    private final static String UUID_3 = "uuid3";
-    private final static String UUID_4 = "uuid4";
+    private final static String UUID_1 = UUID.randomUUID().toString();
+    private final static String UUID_2 = UUID.randomUUID().toString();
+    private final static String UUID_3 = UUID.randomUUID().toString();
+    private final static String UUID_4 = UUID.randomUUID().toString();
 
     private final static String NAME_1 = "name1";
     private final static String NAME_2 = "name2";
