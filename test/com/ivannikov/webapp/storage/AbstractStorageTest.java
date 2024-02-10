@@ -1,16 +1,14 @@
 package com.ivannikov.webapp.storage;
 
 import com.ivannikov.webapp.Config;
-import com.ivannikov.webapp.ResumeTestData;
 import com.ivannikov.webapp.exception.ExistStorageException;
 import com.ivannikov.webapp.exception.NotExistStorageException;
+import com.ivannikov.webapp.model.ContactType;
 import com.ivannikov.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,25 +27,26 @@ public abstract class AbstractStorageTest {
     private final static String NAME_3 = "name3";
     private final static String NAME_4 = "name4";
 
-    private final static Resume RESUME_1 = ResumeTestData.newResume(UUID_1, NAME_1);
-    private final static Resume RESUME_2 = ResumeTestData.newResume(UUID_2, NAME_2);
-    private final static Resume RESUME_3 = ResumeTestData.newResume(UUID_3, NAME_3);
-    private final static Resume RESUME_4 = ResumeTestData.newResume(UUID_4, NAME_4);
+    private final static Resume RESUME_1 = new Resume(UUID_1, NAME_1);
+    private final static Resume RESUME_2 = new Resume(UUID_2, NAME_2);
+    private final static Resume RESUME_3 = new Resume(UUID_3, NAME_3);
+    private final static Resume RESUME_4 = new Resume(UUID_4, NAME_4);
 
     static {
-//        RESUME_1.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
-//        RESUME_1.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_1.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_1.addContact(ContactType.SKYPE, "skype:grigory.kislin");
 //        RESUME_1.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
 //        RESUME_1.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
 
-//        RESUME_2.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
-//        RESUME_2.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_2.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_2.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+//        ResumeTestData.getContacts(RESUME_2);
 //        RESUME_2.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
 //        RESUME_2.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
 //        RESUME_2.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
 
-//        RESUME_3.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
-//        RESUME_3.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        RESUME_3.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_3.addContact(ContactType.SKYPE, "skype:grigory.kislin");
 //        RESUME_3.addSection(SectionType.OBJECTIVE, ResumeTestData.getPersonalQualities());
 //        RESUME_3.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
 //        RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
@@ -125,9 +124,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> expected = storage.getAllSorted();
+        List<Resume> actual = storage.getAllSorted();
         assertEquals(3, storage.size());
-        assertEquals(expected, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        expected.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
+        assertEquals(expected, actual);
     }
 
     @Test

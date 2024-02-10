@@ -23,11 +23,31 @@ public class SqlHelper {
              PreparedStatement ps = connection.prepareStatement(sql)) {
             return executor.execute(ps);
         } catch (SQLException e) {
-            if (isDuplicateKeyError(e)) {
-                throw new ExistStorageException("Duplicate primary key error");
-            } else {
-                throw new StorageException(e);
+            handleSQLException(e);
+        }
+        return null;
+    }
+
+    public <T> void transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection conn = factory.getConnection()) {
+            try {
+                conn.setAutoCommit(false);
+                executor.execute(conn);
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                handleSQLException(e);
             }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+    }
+
+    private void handleSQLException(SQLException e) {
+        if (isDuplicateKeyError(e)) {
+            throw new ExistStorageException("Duplicate primary key error");
+        } else {
+            throw new StorageException(e);
         }
     }
 
