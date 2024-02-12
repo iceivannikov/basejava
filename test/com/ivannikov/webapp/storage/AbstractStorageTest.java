@@ -52,6 +52,8 @@ public abstract class AbstractStorageTest {
 //        RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
 //        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
 //        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+        RESUME_4.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        RESUME_4.addContact(ContactType.SKYPE, "skype:grigory.kislin");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -88,6 +90,9 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume expected = new Resume(UUID_1, "new name");
+        RESUME_1.addContact(ContactType.SKYPE, "new skype");
+        RESUME_1.addContact(ContactType.TELEPHONE, "+7(999) 999-9999");
+        RESUME_1.addContact(ContactType.EMAIL, "new_email@gmail.com");
         storage.update(expected);
         Resume actual = storage.get(UUID_1);
         assertEquals(expected, actual);
