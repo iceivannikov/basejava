@@ -1,3 +1,3 @@
 DROP TABLE contact;
-DROP TABLE list_section;
+DROP TABLE section;
 DROP TABLE resume;
