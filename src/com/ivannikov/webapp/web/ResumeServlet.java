@@ -4,7 +4,6 @@ import com.ivannikov.webapp.Config;
 import com.ivannikov.webapp.model.Resume;
 import com.ivannikov.webapp.storage.Storage;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +14,13 @@ import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
-    private Storage storage;
+    private final Storage storage = Config.getInstance().getStorage();
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        storage = Config.getInstance().getStorage();
-    }
+//    @Override
+//    public void init(ServletConfig config) throws ServletException {
+//        super.init(config);
+//        storage = Config.getInstance().getStorage();
+//    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

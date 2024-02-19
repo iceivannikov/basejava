@@ -1,8 +1,8 @@
 package com.ivannikov.webapp;
 
+import com.ivannikov.webapp.sql.SqlHelper;
 import com.ivannikov.webapp.storage.SqlStorage;
 import com.ivannikov.webapp.storage.Storage;
-import com.ivannikov.webapp.sql.SqlHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static final File PROPS = new File( "config/resumes.properties");
+    private static final File PROPS = new File("/Users/viktor/IdeaProjects/basejava/config/resumes.properties");
     private static final Config INSTANCE = new Config();
     private final File storageDir;
     private final Storage storage;
