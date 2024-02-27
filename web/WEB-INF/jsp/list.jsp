@@ -29,6 +29,8 @@
         </tr>
         </c:forEach>
     </table>
+        <hr/>
+            <a href="resume?null&action=new"><button>Add new resume</button></a>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

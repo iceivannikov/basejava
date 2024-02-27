@@ -24,14 +24,19 @@ public class ResumeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        Resume resume = null;
         String uuid = req.getParameter("uuid");
         String action = req.getParameter("action");
+        if ("new".equals(action) && uuid == null) {
+            resume = new Resume();
+            req.getRequestDispatcher("/WEB-INF/jsp/new.jsp")
+                    .forward(req, resp);
+        }
         if (action == null) {
             req.setAttribute("resumes", storage.getAllSorted());
             req.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(req, resp);
             return;
         }
-        Resume resume = null;
         switch (action) {
             case "delete" -> {
                 storage.delete(uuid);
@@ -59,6 +64,7 @@ public class ResumeServlet extends HttpServlet {
                 resume.getContacts().remove(type);
             }
         }
+        String action = req.getParameter("action");
         storage.update(resume);
         resp.sendRedirect("resume");
     }
