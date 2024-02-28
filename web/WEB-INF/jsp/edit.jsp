@@ -3,7 +3,6 @@
 <%@ page import="com.ivannikov.webapp.model.ListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -15,12 +14,12 @@
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+    <form method="post" action="resume" enctype="application/x-www-form-urlencoded" autocomplete="off">
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Name</dt>
             <dd><label>
-                <input type="text" name="fullName" size="50" value="${resume.fullName}">
+                <input type="text" name="fullName" size="50" value="${resume.fullName}" required>
             </label></dd>
         </dl>
         <h3>Contacts:</h3>
@@ -33,8 +32,12 @@
             </dl>
         </c:forEach>
         <h3>Sections:</h3>
-        <c:forEach var="type" items="<%=SectionType.values()%>">
-            <c:set var="section" value="${resume.getSection(type)}"/>
+        <c:forEach var="sectionEntry" items="${resume.sections}">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.ivannikov.webapp.model.SectionType, com.ivannikov.webapp.model.Section>"/>
+            <c:set var="type" value="${sectionEntry.key}"/>
+            <c:set var="section" value="${sectionEntry.value}"/>
+            <jsp:useBean id="section" type="com.ivannikov.webapp.model.Section"/>
             <dl>
                 <dt>${type.title}</dt>
             </dl>
@@ -46,15 +49,16 @@
                 </c:when>
                 <c:when test="${type eq 'ACHIEVEMENT' || type eq 'QUALIFICATIONS'}">
                     <dd><label>
-                        <textarea rows="5" cols="75" name="${type}">${section}</textarea>
+                        <textarea rows="5" cols="75"
+                                  name="${type}"><%=String.join("\n", ((ListSection) section).getListSections())%></textarea>
                     </label></dd>
                 </c:when>
             </c:choose>
         </c:forEach>
         <hr>
         <button type="submit">Save</button>
-        <button onclick="window.history.back()">Cancel</button>
     </form>
+        <button onclick="window.history.back()">Cancel</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

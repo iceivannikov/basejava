@@ -1,4 +1,3 @@
-<%@ page import="com.ivannikov.webapp.model.SectionType" %>
 <%@ page import="com.ivannikov.webapp.model.ListSection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
