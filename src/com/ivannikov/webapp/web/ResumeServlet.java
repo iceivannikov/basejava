@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -73,14 +72,14 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
-            if (value != null && !value.trim().isEmpty()) {
+            if (value == null) {
+                resume.getSections().remove(type);
+            } else {
                 switch (type) {
                     case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(value));
                     case ACHIEVEMENT, QUALIFICATIONS -> resume.setSection(type,
-                                new ListSection(Arrays.asList(value.split("\\n"))));
+                                new ListSection(value.split("\\n")));
                 }
-            } else {
-                resume.getSections().remove(type);
             }
         }
         storage.update(resume);

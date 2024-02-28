@@ -47,7 +47,6 @@
         </c:choose>
     </c:forEach>
     <hr>
-    <!-- Изменяем текст кнопки -->
     <button type="submit">Create</button>
 </form>
     <button onclick="window.history.back()">Cancel</button>
