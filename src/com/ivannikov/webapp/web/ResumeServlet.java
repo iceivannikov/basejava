@@ -25,11 +25,6 @@ public class ResumeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String uuid = req.getParameter("uuid");
         String action = req.getParameter("action");
-        if ("new".equals(action) && uuid == null) {
-            req.setAttribute("resume", new Resume());
-            req.getRequestDispatcher("/WEB-INF/jsp/new.jsp").forward(req, resp);
-            return;
-        }
         if (action == null) {
             req.setAttribute("resumes", storage.getAllSorted());
             req.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(req, resp);
@@ -37,12 +32,17 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume resume = null;
         switch (action) {
+            case "view", "edit" -> resume = storage.get(uuid);
             case "delete" -> {
                 storage.delete(uuid);
                 resp.sendRedirect("resume");
                 return;
             }
-            case "view", "edit" -> resume = storage.get(uuid);
+            case "new" -> {
+                req.setAttribute("resume", new Resume());
+                req.getRequestDispatcher("/WEB-INF/jsp/new.jsp").forward(req, resp);
+                return;
+            }
         }
         req.setAttribute("resume", resume);
         req.getRequestDispatcher("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
@@ -78,7 +78,7 @@ public class ResumeServlet extends HttpServlet {
                 switch (type) {
                     case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(value));
                     case ACHIEVEMENT, QUALIFICATIONS -> resume.setSection(type,
-                                new ListSection(value.split("\\n")));
+                                new ListSection(value.trim().split("\\n")));
                 }
             }
         }

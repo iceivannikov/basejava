@@ -36,12 +36,12 @@
         <c:choose>
             <c:when test="${type eq 'PERSONAL' || type eq 'OBJECTIVE'}">
                 <dd><label>
-                    <textarea rows="5" cols="75" name="${type}" required></textarea>
+                    <textarea rows="5" cols="75" name="${type}" ></textarea>
                 </label></dd>
             </c:when>
             <c:when test="${type eq 'ACHIEVEMENT' || type eq 'QUALIFICATIONS'}">
                 <dd><label>
-                    <textarea rows="5" cols="75" name="${type}" required></textarea>
+                    <textarea rows="5" cols="75" name="${type}" ></textarea>
                 </label></dd>
             </c:when>
         </c:choose>
