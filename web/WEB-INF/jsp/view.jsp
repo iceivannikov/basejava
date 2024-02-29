@@ -1,4 +1,5 @@
 <%@ page import="com.ivannikov.webapp.model.ListSection" %>
+<%@ page import="com.ivannikov.webapp.model.OrganizationSection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -45,6 +46,21 @@
                         <ul>
                             <li>${text}</li>
                         </ul>
+                    </c:forEach>
+                </label></dd>
+            </c:when>
+            <c:when test="${type eq 'EXPERIENCE' || type eq 'EDUCATION'}">
+                <dd><label>
+                    <c:set var="organizations" value="<%=((OrganizationSection) section).getOrganizations()%>"/>
+                    <c:forEach var="organization" items="${organizations}">
+                        <ul>
+                            <li>${organization}</li>
+                        </ul>
+                        <c:forEach var="period" items="${organization.periods}">
+                            <ul>
+                                <li>${period}</li>
+                            </ul>
+                        </c:forEach>
                     </c:forEach>
                 </label></dd>
             </c:when>

@@ -146,6 +146,7 @@ public class SqlStorage implements Storage {
         switch (entry.getValue()) {
             case TextSection textSection -> saveTextSection(ps, textSection);
             case ListSection listSection -> saveListSection(ps, listSection);
+            case OrganizationSection organizationSection -> saveOrganizationSection(ps, organizationSection);
             default -> throw new IllegalStateException("Unexpected value: " + entry.getValue());
         }
     }
@@ -158,6 +159,26 @@ public class SqlStorage implements Storage {
     private void saveListSection(PreparedStatement ps, ListSection listSection) throws SQLException {
         List<String> list = listSection.getListSections();
         String join = String.join("\n", list);
+        ps.setString(3, join);
+    }
+
+    private void saveOrganizationSection(PreparedStatement ps, OrganizationSection organizationSection) throws SQLException {
+        List<Organization> organizations = organizationSection.getOrganizations();
+        List<String> org = new ArrayList<>();
+        String join = null;
+        for (Organization organization : organizations) {
+            org.add(organization.getName());
+            org.add(organization.getWebsite());
+            List<Organization.Period> periods = organization.getPeriods();
+            for (Organization.Period period : periods) {
+                org.add(period.getName());
+                org.add(period.getDescription());
+                org.add(period.getStartDate().toString());
+                org.add(period.getEndDate().toString());
+            }
+            join = String.join("\n", org);
+        }
+        System.out.println(join);
         ps.setString(3, join);
     }
 
@@ -215,8 +236,12 @@ public class SqlStorage implements Storage {
         return switch (type) {
             case PERSONAL, OBJECTIVE -> getTextSection(rs);
             case ACHIEVEMENT, QUALIFICATIONS -> getListSection(rs);
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            case EXPERIENCE, EDUCATION -> getOrgSection(rs);
         };
+    }
+
+    private TextSection getTextSection(ResultSet rs) throws SQLException {
+        return new TextSection(rs.getString("value"));
     }
 
     private ListSection getListSection(ResultSet rs) throws SQLException {
@@ -226,7 +251,21 @@ public class SqlStorage implements Storage {
         return new ListSection(list);
     }
 
-    private TextSection getTextSection(ResultSet rs) throws SQLException {
-        return new TextSection(rs.getString("value"));
+    private OrganizationSection getOrgSection(ResultSet rs) throws SQLException {
+        String value = rs.getString("value");
+        String[] split = value.split("\n");
+        List<Organization> organizations = new ArrayList<>();
+        List<Organization.Period> periods = new ArrayList<>();
+        for (String string : split) {
+//            Organization organization = new Organization();
+//            organizations.add(organization.setName(string));
+//            organization.setWebsite(string);
+//            Organization.Period period = new Organization.Period();
+//            period.setName(string);
+//            period.setDescription(string);
+//            period.setStartDate(LocalDate.parse(string));
+//            period.setEndDate(LocalDate.parse(string));
+        }
+        return null;
     }
 }
