@@ -2,7 +2,7 @@ package com.ivannikov.webapp.model;
 
 public enum ContactType {
 
-    TELEPHONE("Telephone"),
+    TELEPHONE("Телефон"),
     SKYPE("Skype"){
         @Override
         public String toHtml0(String value) {
@@ -15,10 +15,10 @@ public enum ContactType {
             return "<a href='email:" + value + "'>" + value + "</a>";
         }
     },
-    PROFILE_GITHUB("Profile Git Hub"),
-    PROFILE_LINKEDIN("Profile LinkedIn"),
-    PROFILE_STACKOVERFLOW("Profile Stackoverflow"),
-    WEBSITE("Website");
+    PROFILE_GITHUB("Профиль Git Hub"),
+    PROFILE_LINKEDIN("Профиль LinkedIn"),
+    PROFILE_STACKOVERFLOW("Профиль Stackoverflow"),
+    WEBSITE("Сайт");
 
     private final String title;
 

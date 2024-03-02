@@ -53,8 +53,8 @@ public abstract class AbstractStorageTest {
         RESUME_2.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
         RESUME_2.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
         RESUME_2.addSection(SectionType.QUALIFICATIONS, ResumeTestData.getQualificationList());
-//        RESUME_2.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
-//        RESUME_2.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+        RESUME_2.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
+        RESUME_2.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
 
         RESUME_3.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         RESUME_3.addContact(ContactType.SKYPE, "skype:grigory.kislin");
@@ -62,8 +62,9 @@ public abstract class AbstractStorageTest {
         RESUME_3.addSection(SectionType.PERSONAL, ResumeTestData.getPosition());
         RESUME_3.addSection(SectionType.ACHIEVEMENT, ResumeTestData.getAchievementsList());
         RESUME_3.addSection(SectionType.QUALIFICATIONS, ResumeTestData.getQualificationList());
-//        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
-//        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+        RESUME_3.addSection(SectionType.EXPERIENCE, ResumeTestData.getOrganizationsJob());
+        RESUME_3.addSection(SectionType.EDUCATION, ResumeTestData.getOrganizationsStudies());
+
         RESUME_4.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
         RESUME_4.addContact(ContactType.SKYPE, "skype:grigory.kislin");
     }

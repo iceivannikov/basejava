@@ -163,9 +163,9 @@ public class ResumeTestData {
                         DateUtil.of(2012, 4),
                         DateUtil.of(2014, 10))));
         List<Organization> organizations = new ArrayList<>();
+        organizations.add(JavaOnlineProjects);
         organizations.add(RITCenter);
         organizations.add(Wrike);
-        organizations.add(JavaOnlineProjects);
         return new OrganizationSection(organizations);
     }
 
@@ -195,9 +195,9 @@ public class ResumeTestData {
                         DateUtil.of(2005, 1),
                         DateUtil.of(2005, 4))));
         List<Organization> organizations = new ArrayList<>();
-        organizations.add(SiemensAG);
-        organizations.add(Luxoft);
         organizations.add(Coursera);
+        organizations.add(Luxoft);
+        organizations.add(SiemensAG);
         return new OrganizationSection(organizations);
     }
 }

@@ -1,12 +1,12 @@
 package com.ivannikov.webapp.model;
 
 public enum SectionType {
-    PERSONAL("Personal qualities"),
-    OBJECTIVE("Position"),
-    ACHIEVEMENT("Achievements"),
-    QUALIFICATIONS("Qualification"),
-    EXPERIENCE("Experience"),
-    EDUCATION("Education");
+    OBJECTIVE("Позиция"),
+    PERSONAL("Личные качества"),
+    ACHIEVEMENT("Достижения"),
+    QUALIFICATIONS("Квалификация"),
+    EXPERIENCE("Опыт работы"),
+    EDUCATION("Образование");
 
     private final String title;
 

@@ -1,7 +1,10 @@
 <%@ page import="com.ivannikov.webapp.model.ListSection" %>
 <%@ page import="com.ivannikov.webapp.model.OrganizationSection" %>
+<%@ page import="com.ivannikov.webapp.util.HtmlUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="canvas" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -22,7 +25,6 @@
             <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
         </c:forEach>
     </p>
-    <h3>Sections:</h3>
     <c:forEach var="sectionEntry" items="${resume.sections}">
         <jsp:useBean id="sectionEntry"
                      type="java.util.Map.Entry<com.ivannikov.webapp.model.SectionType, com.ivannikov.webapp.model.Section>"/>
@@ -30,10 +32,21 @@
         <c:set var="section" value="${sectionEntry.value}"/>
         <jsp:useBean id="section" type="com.ivannikov.webapp.model.Section"/>
         <dl>
-            <dt>${type.title}</dt>
+            <b>
+                <dt>${type.title}</dt>
+            </b>
         </dl>
         <c:choose>
-            <c:when test="${type eq 'PERSONAL' || type eq 'OBJECTIVE'}">
+            <c:when test="${type eq 'OBJECTIVE'}">
+                <b>
+                    <dd><label>
+                        <ul>
+                            <li>${section}</li>
+                        </ul>
+                    </label></dd>
+                </b>
+            </c:when>
+            <c:when test="${type eq 'PERSONAL'}">
                 <dd><label>
                     <ul>
                         <li>${section}</li>
@@ -53,13 +66,40 @@
                 <dd><label>
                     <c:set var="organizations" value="<%=((OrganizationSection) section).getOrganizations()%>"/>
                     <c:forEach var="organization" items="${organizations}">
-                        <ul>
-                            <li>${organization}</li>
-                        </ul>
+                        <tr>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty organization.website}">
+                                        <h3>${organization.name}</h3>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h3><a href="${organization.website}">${organization.name}</a></h3>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
                         <c:forEach var="period" items="${organization.periods}">
-                            <ul>
-                                <li>${period}</li>
-                            </ul>
+                            <jsp:useBean id="period" type="com.ivannikov.webapp.model.Organization.Period"/>
+                            <tr>
+                                <td>
+                                    <h4>
+                                        <%=HtmlUtil.formatDates(period)%>
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>
+                                        <b>${period.name}</b>
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                        ${period.description}
+                                </td>
+                            </tr>
+                            <hr>
                         </c:forEach>
                     </c:forEach>
                 </label></dd>
