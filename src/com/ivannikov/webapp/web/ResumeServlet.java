@@ -32,7 +32,7 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume resume = null;
         switch (action) {
-            case "view", "edit" -> resume = storage.get(uuid);
+            case "edit", "view" -> resume = storage.get(uuid);
             case "delete" -> {
                 storage.delete(uuid);
                 resp.sendRedirect("resume");
@@ -72,6 +72,7 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
+            String[] values = req.getParameterValues(type.name());
             if (value == null) {
                 resume.getSections().remove(type);
             } else {
@@ -79,6 +80,11 @@ public class ResumeServlet extends HttpServlet {
                     case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(value));
                     case ACHIEVEMENT, QUALIFICATIONS -> resume.setSection(type,
                                 new ListSection(value.trim().split("\\n")));
+                    case EDUCATION, EXPERIENCE -> {
+
+
+//                        resume.addSection(type, section);
+                    }
                 }
             }
         }

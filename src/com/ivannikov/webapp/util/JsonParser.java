@@ -33,5 +33,4 @@ public class JsonParser {
     public static <T> String write(T object, Class<T> clazz) {
         return GSON.toJson(object, clazz);
     }
-
 }

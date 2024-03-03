@@ -3,8 +3,6 @@
 <%@ page import="com.ivannikov.webapp.util.HtmlUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="canvas" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -31,11 +29,13 @@
         <c:set var="type" value="${sectionEntry.key}"/>
         <c:set var="section" value="${sectionEntry.value}"/>
         <jsp:useBean id="section" type="com.ivannikov.webapp.model.Section"/>
-        <dl>
-            <b>
-                <dt>${type.title}</dt>
-            </b>
-        </dl>
+        <h2>
+            <dl>
+                <b>
+                    <dt>${type.title}</dt>
+                </b>
+            </dl>
+        </h2>
         <c:choose>
             <c:when test="${type eq 'OBJECTIVE'}">
                 <b>

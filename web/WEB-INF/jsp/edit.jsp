@@ -1,4 +1,8 @@
-<%@ page import="com.ivannikov.webapp.model.*" %>
+<%@ page import="com.ivannikov.webapp.model.ContactType" %>
+<%@ page import="com.ivannikov.webapp.model.ListSection" %>
+<%@ page import="com.ivannikov.webapp.model.OrganizationSection" %>
+<%@ page import="com.ivannikov.webapp.model.SectionType" %>
+<%@ page import="com.ivannikov.webapp.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -30,15 +34,14 @@
             </dl>
         </c:forEach>
         <hr>
-        <c:forEach var="sectionEntry" items="${resume.sections}">
-            <jsp:useBean id="sectionEntry"
-                         type="java.util.Map.Entry<com.ivannikov.webapp.model.SectionType, com.ivannikov.webapp.model.Section>"/>
-            <c:set var="type" value="${sectionEntry.key}"/>
-            <c:set var="section" value="${sectionEntry.value}"/>
+        <c:forEach var="type" items="<%=SectionType.values()%>">
+            <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="com.ivannikov.webapp.model.Section"/>
-            <dl>
-                <dt>${type.title}</dt>
-            </dl>
+            <h2>
+                <dl>
+                    <dt>${type.title}</dt>
+                </dl>
+            </h2>
             <c:choose>
                 <c:when test="${type eq 'PERSONAL' || type eq 'OBJECTIVE'}">
                     <dd><label>
@@ -66,6 +69,7 @@
                             </label></dd>
                         </dl>
                         <c:forEach var="period" items="${organozation.periods}">
+                            <jsp:useBean id="period" type="com.ivannikov.webapp.model.Organization.Period"/>
                             <dl>
                                 <dt>Должность:</dt>
                                 <dd><label>
@@ -81,26 +85,29 @@
                             <dl>
                                 <dt>Дата начала:</dt>
                                 <dd><label>
-                                    <input type="text" name="${type}" size="30" value="${period.startDate}">
+                                    <input type="text" name="${type}" size="30"
+                                           value="<%=DateUtil.format(period.getStartDate())%>">
                                 </label></dd>
                             </dl>
                             <dl>
                                 <dt>Дата завершения:</dt>
                                 <dd><label>
-                                    <input type="text" name="${type}" size="30" value="${period.endDate}">
+                                    <input type="text" name="${type}" size="30"
+                                           value="<%=DateUtil.format(period.getEndDate())%>">
                                 </label></dd>
                             </dl>
-                            <b><hr></b>
-                            <br>
+                            <hr>
                         </c:forEach>
                     </c:forEach>
                 </c:when>
             </c:choose>
         </c:forEach>
-        <hr>
+        <br>
+        <br>
+        <br>
         <button type="submit">Save</button>
     </form>
-        <button onclick="window.history.back()">Cancel</button>
+    <button onclick="window.history.back()">Cancel</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
