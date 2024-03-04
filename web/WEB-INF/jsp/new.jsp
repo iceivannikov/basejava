@@ -14,12 +14,12 @@
 <section>
 <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
     <dl>
-        <dt>Name</dt>
+        <dt>Имя:</dt>
         <dd><label>
             <input type="text" name="fullName" size="50" value="" required >
         </label></dd>
     </dl>
-    <h3>Contacts:</h3>
+    <h3>Контакты:</h3>
     <c:forEach var="type" items="<%=ContactType.values()%>">
         <dl>
             <dt>${type.title}</dt>
@@ -28,11 +28,12 @@
             </label></dd>
         </dl>
     </c:forEach>
-    <h3>Sections:</h3>
     <c:forEach var="type" items="<%=SectionType.values()%>">
-        <dl>
-            <dt>${type.title}</dt>
-        </dl>
+        <h3>
+            <dl>
+                <dt>${type.title}</dt>
+            </dl>
+        </h3>
         <c:choose>
             <c:when test="${type eq 'PERSONAL' || type eq 'OBJECTIVE'}">
                 <dd><label>

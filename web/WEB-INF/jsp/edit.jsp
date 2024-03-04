@@ -37,11 +37,11 @@
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="com.ivannikov.webapp.model.Section"/>
-            <h2>
+            <h3>
                 <dl>
                     <dt>${type.title}</dt>
                 </dl>
-            </h2>
+            </h3>
             <c:choose>
                 <c:when test="${type eq 'PERSONAL' || type eq 'OBJECTIVE'}">
                     <dd><label>

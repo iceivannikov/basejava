@@ -73,13 +73,14 @@ public class ResumeServlet extends HttpServlet {
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
             String[] values = req.getParameterValues(type.name());
-            if (value == null) {
+            if (value == null || value.isEmpty()) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
                     case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(value));
-                    case ACHIEVEMENT, QUALIFICATIONS -> resume.setSection(type,
-                                new ListSection(value.trim().split("\\n")));
+                    case ACHIEVEMENT, QUALIFICATIONS ->
+                        resume.setSection(type,
+                                new ListSection(value.trim().replaceAll("\\r", "").split("\\n")));
                     case EDUCATION, EXPERIENCE -> {
 
 
