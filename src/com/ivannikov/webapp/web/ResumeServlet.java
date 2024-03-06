@@ -3,6 +3,7 @@ package com.ivannikov.webapp.web;
 import com.ivannikov.webapp.Config;
 import com.ivannikov.webapp.model.*;
 import com.ivannikov.webapp.storage.Storage;
+import com.ivannikov.webapp.util.ResumeUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,28 +41,16 @@ public class ResumeServlet extends HttpServlet {
                 resp.sendRedirect("resume");
                 return;
             }
-            case "new" -> {
-                req.setAttribute("resume", new Resume());
-                req.getRequestDispatcher("/WEB-INF/jsp/new.jsp").forward(req, resp);
-                return;
-            }
-            case "edit" -> {
-                resume = storage.get(uuid);
-                SectionType[] values = SectionType.values();
-                for (SectionType type : values) {
-                    Section section = resume.getSection(type);
-                    if (section == null) {
-                        switch (type) {
-                            case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(""));
-                            case ACHIEVEMENT, QUALIFICATIONS -> resume.addSection(type, new ListSection(""));
-                            case EDUCATION, EXPERIENCE -> resume.addSection(type,
-                                    new OrganizationSection(
-                                            new Organization("", "",
-                                                    new Organization.
-                                                            Period("", "", 1, 1, 1, 1))));
-                        }
-                    }
+            case "edit", "new" -> {
+                resume = new Resume("");
+                ResumeUtil.setEmptySections(resume);
+                if ("new".equals(action)) {
+                    req.setAttribute("resume", resume);
+                    req.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(req, resp);
+                    return;
                 }
+                resume = storage.get(uuid);
+                ResumeUtil.setEmptySections(resume);
             }
         }
         req.setAttribute("resume", resume);

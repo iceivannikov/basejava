@@ -20,9 +20,9 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><label>
-                <input type="text" name="fullName" size="50" value="${resume.fullName}" required>
-            </label></dd>
+                <dd><label>
+                    <input type="text" name="fullName" size="50" value="${resume.fullName}" required>
+                </label></dd>
         </dl>
         <h3>Контакты:</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
