@@ -45,7 +45,8 @@
                     <b>
                         <dd><label>
                             <ul>
-                                <li><%=((TextSection) section).getTextSection()%></li>
+                                <li><%=((TextSection) section).getTextSection()%>
+                                </li>
                             </ul>
                         </label></dd>
                     </b>
@@ -53,7 +54,8 @@
                 <c:when test="${type eq 'PERSONAL'}">
                     <dd><label>
                         <ul>
-                            <li><%=((TextSection) section).getTextSection()%></li>
+                            <li><%=((TextSection) section).getTextSection()%>
+                            </li>
                         </ul>
                     </label></dd>
                 </c:when>

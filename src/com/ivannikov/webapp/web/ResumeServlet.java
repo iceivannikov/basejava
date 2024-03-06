@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -32,7 +34,7 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume resume = null;
         switch (action) {
-            case "edit", "view" -> resume = storage.get(uuid);
+            case "view" -> resume = storage.get(uuid);
             case "delete" -> {
                 storage.delete(uuid);
                 resp.sendRedirect("resume");
@@ -42,6 +44,24 @@ public class ResumeServlet extends HttpServlet {
                 req.setAttribute("resume", new Resume());
                 req.getRequestDispatcher("/WEB-INF/jsp/new.jsp").forward(req, resp);
                 return;
+            }
+            case "edit" -> {
+                resume = storage.get(uuid);
+                SectionType[] values = SectionType.values();
+                for (SectionType type : values) {
+                    Section section = resume.getSection(type);
+                    if (section == null) {
+                        switch (type) {
+                            case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(""));
+                            case ACHIEVEMENT, QUALIFICATIONS -> resume.addSection(type, new ListSection(""));
+                            case EDUCATION, EXPERIENCE -> resume.addSection(type,
+                                    new OrganizationSection(
+                                            new Organization("", "",
+                                                    new Organization.
+                                                            Period("", "", 1, 1, 1, 1))));
+                        }
+                    }
+                }
             }
         }
         req.setAttribute("resume", resume);
@@ -64,28 +84,38 @@ public class ResumeServlet extends HttpServlet {
         resume.setFullName(fullName);
         for (ContactType type : ContactType.values()) {
             String value = req.getParameter(type.name());
-            if (value != null && !value.trim().isEmpty()) {
-                resume.addContact(type, value);
-            } else {
+            if (value == null || value.trim().isEmpty()) {
                 resume.getContacts().remove(type);
+            } else {
+                resume.addContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
             String[] values = req.getParameterValues(type.name());
-            if (value == null || value.isEmpty()) {
+            if (value == null || value.trim().isEmpty()) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
-                    case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(value));
-                    case ACHIEVEMENT, QUALIFICATIONS ->
-                        resume.setSection(type,
-                                new ListSection(value.trim().replaceAll("\\r", "").split("\\n")));
-                    case EDUCATION, EXPERIENCE -> {
-
-
-//                        resume.addSection(type, section);
+                    case PERSONAL, OBJECTIVE -> resume.setSection(type,
+                            new TextSection(value.trim().replaceAll("\r\n", "")));
+                    case ACHIEVEMENT, QUALIFICATIONS -> {
+                        List<String> listSections = new ArrayList<>();
+                        String[] split = value.split("\n");
+                        for (String s : split) {
+                            if (!s.trim().isEmpty()) {
+                                String string = s.trim().replaceAll("\r", "");
+                                listSections.add(string);
+                            }
+                        }
+                        resume.setSection(type, new ListSection(listSections));
                     }
+
+//                    case EDUCATION, EXPERIENCE -> {
+//
+//
+////                        resume.addSection(type, section);
+//                    }
                 }
             }
         }

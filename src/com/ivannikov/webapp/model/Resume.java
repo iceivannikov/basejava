@@ -54,7 +54,7 @@ public class Resume implements Serializable {
     }
 
     public Map<SectionType, Section> getSections() {
-        return new EnumMap<>(sections);
+        return sections;
     }
 
     public Map<ContactType, String> getContacts() {
