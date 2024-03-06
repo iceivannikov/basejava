@@ -36,21 +36,21 @@ public class ResumeServlet extends HttpServlet {
         Resume resume = null;
         switch (action) {
             case "view" -> resume = storage.get(uuid);
+            case "edit" -> {
+                resume = storage.get(uuid);
+                ResumeUtil.setEmptySections(resume);
+            }
             case "delete" -> {
                 storage.delete(uuid);
                 resp.sendRedirect("resume");
                 return;
             }
-            case "edit", "new" -> {
+            case "new" -> {
                 resume = new Resume("");
                 ResumeUtil.setEmptySections(resume);
-                if ("new".equals(action)) {
-                    req.setAttribute("resume", resume);
-                    req.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(req, resp);
-                    return;
-                }
-                resume = storage.get(uuid);
-                ResumeUtil.setEmptySections(resume);
+                req.setAttribute("resume", resume);
+                req.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(req, resp);
+                return;
             }
         }
         req.setAttribute("resume", resume);
