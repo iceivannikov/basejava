@@ -35,22 +35,19 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume resume = null;
         switch (action) {
-            case "view" -> resume = storage.get(uuid);
-            case "edit" -> {
-                resume = storage.get(uuid);
-                ResumeUtil.setEmptySections(resume);
-            }
             case "delete" -> {
                 storage.delete(uuid);
                 resp.sendRedirect("resume");
                 return;
             }
-            case "new" -> {
-                resume = new Resume("");
+            case "view" -> resume = storage.get(uuid);
+            case "edit" -> {
+                resume = storage.get(uuid);
                 ResumeUtil.setEmptySections(resume);
-                req.setAttribute("resume", resume);
-                req.getRequestDispatcher("/WEB-INF/jsp/edit.jsp").forward(req, resp);
-                return;
+            }
+            case "new" -> {
+                resume = new Resume();
+                ResumeUtil.setEmptySections(resume);
             }
         }
         req.setAttribute("resume", resume);
@@ -63,14 +60,11 @@ public class ResumeServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String uuid = req.getParameter("uuid");
         String fullName = req.getParameter("fullName");
-        Resume resume;
-        if (uuid == null) {
-            resume = new Resume(fullName);
-            storage.save(resume);
-            uuid = resume.getUuid();
-        }
-        resume = storage.get(uuid);
+
+        boolean isExistResume = uuid != null && !uuid.isEmpty();
+        Resume resume = isExistResume ? storage.get(uuid) : new Resume("");
         resume.setFullName(fullName);
+
         for (ContactType type : ContactType.values()) {
             String value = req.getParameter(type.name());
             if (value == null || value.trim().isEmpty()) {
@@ -108,7 +102,11 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        storage.update(resume);
+        if (isExistResume) {
+            storage.update(resume);
+        } else {
+            storage.save(resume);
+        }
         resp.sendRedirect("resume");
     }
 }
