@@ -76,7 +76,9 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${empty organization.website}">
-                                            <h3>${organization.name}</h3>
+<%--                                            <h3>${organization.name}</h3>--%>
+                                            <h3><a href="#" onclick="return false;" style="color: black; text-decoration: none;">
+                                                    ${organization.name}</a></h3>
                                         </c:when>
                                         <c:otherwise>
                                             <h3><a href="${organization.website}">${organization.name}</a></h3>

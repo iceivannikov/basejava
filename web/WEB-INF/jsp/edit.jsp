@@ -55,44 +55,49 @@
                     </label></dd>
                 </c:when>
                 <c:when test="${type eq 'EXPERIENCE' || type eq 'EDUCATION'}">
-                    <c:forEach var="organozation" items="<%=((OrganizationSection) section).getOrganizations()%>">
+                    <c:forEach var="organozation" items="<%=((OrganizationSection) section).getOrganizations()%>"
+                               varStatus="status">
                         <dl>
                             <dt>Название организации:</dt>
                             <dd><label>
-                                <input type="text" name="${type}" size="30" value="${organozation.name}">
+                                <input type="text" name="${type}" size="30"
+                                       value="${organozation.name}">
                             </label></dd>
                         </dl>
                         <dl>
                             <dt>Сайт организации:</dt>
                             <dd><label>
-                                <input type="text" name="${type}" size="30" value="${organozation.website}">
+                                <input type="text" name="${type}website" size="30"
+                                       value="${organozation.website}">
                             </label></dd>
                         </dl>
-                        <c:forEach var="period" items="${organozation.periods}">
+                        <c:forEach var="period" items="${organozation.periods}" varStatus="status">
                             <jsp:useBean id="period" type="com.ivannikov.webapp.model.Organization.Period"/>
                             <dl>
                                 <dt>Должность:</dt>
                                 <dd><label>
-                                    <input type="text" name="${type}" size="30" value="${period.name}">
+                                    <input type="text" name="${type}periodName${status.index}" size="30"
+                                           value="${period.name}">
                                 </label></dd>
                             </dl>
                             <dl>
                                 <dt>Описание:</dt>
                                 <dd><label>
-                                    <textarea rows="5" cols="75" name="${type}">${period.description}</textarea>
+                                    <textarea rows="5" cols="75"
+                                              name="${type}periodDescription${status.index}">${period.description}</textarea>
                                 </label></dd>
                             </dl>
                             <dl>
                                 <dt>Дата начала:</dt>
                                 <dd><label>
-                                    <input type="text" name="${type}" size="30"
+                                    <input type="text" name="${type}periodStart${status.index}" size="30"
                                            value="<%=DateUtil.format(period.getStartDate())%>">
                                 </label></dd>
                             </dl>
                             <dl>
                                 <dt>Дата завершения:</dt>
                                 <dd><label>
-                                    <input type="text" name="${type}" size="30"
+                                    <input type="text" name="${type}periodEnd${status.index}" size="30"
                                            value="<%=DateUtil.format(period.getEndDate())%>">
                                 </label></dd>
                             </dl>

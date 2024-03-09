@@ -3,6 +3,7 @@ package com.ivannikov.webapp.web;
 import com.ivannikov.webapp.Config;
 import com.ivannikov.webapp.model.*;
 import com.ivannikov.webapp.storage.Storage;
+import com.ivannikov.webapp.util.DateUtil;
 import com.ivannikov.webapp.util.ResumeUtil;
 
 import javax.servlet.ServletConfig;
@@ -76,7 +77,7 @@ public class ResumeServlet extends HttpServlet {
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
             String[] values = req.getParameterValues(type.name());
-            if (value == null || value.trim().isEmpty()) {
+            if (value == null || value.trim().isEmpty() && values.length < 2) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
@@ -93,12 +94,24 @@ public class ResumeServlet extends HttpServlet {
                         }
                         resume.setSection(type, new ListSection(listSections));
                     }
-
-//                    case EDUCATION, EXPERIENCE -> {
-//
-//
-////                        resume.addSection(type, section);
-//                    }
+                    case EDUCATION, EXPERIENCE -> {
+                        List<Organization> organizations = new ArrayList<>();
+                        String[] orgWebsites = req.getParameterValues(type.name() + "website");
+                        for (int i = 0; i < values.length; i++) {
+                            String orgName = values[i];
+                            String[] periodNames = req.getParameterValues(type.name() + "periodName" + i);
+                            String[] periodDescriptions = req.getParameterValues(type.name() + "periodDescription" + i);
+                            String[] periodStarts = req.getParameterValues(type.name() + "periodStart" + i);
+                            String[] periodEnds = req.getParameterValues(type.name() + "periodEnd" + i);
+                            List<Organization.Period> periods = new ArrayList<>();
+                            for (int j = 0; j < periodNames.length; j++) {
+                                periods.add(new Organization.Period(periodNames[j], periodDescriptions[j],
+                                        DateUtil.parse(periodStarts[j]), DateUtil.parse(periodEnds[j])));
+                            }
+                            organizations.add(new Organization(orgName, orgWebsites[i], periods));
+                        }
+                        resume.addSection(type, new OrganizationSection(organizations));
+                    }
                 }
             }
         }
