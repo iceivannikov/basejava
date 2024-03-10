@@ -20,6 +20,7 @@ import static com.ivannikov.webapp.util.DateUtil.NOW;
 public class Organization implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+    public static final Organization EMPTY = new Organization("", "", Period.EMPTY);
     private String name;
     private String website;
     private List<Period> periods = new ArrayList<>();
@@ -92,6 +93,7 @@ public class Organization implements Serializable {
     public static class Period implements Serializable {
         @Serial
         private static final long serialVersionUID = 1L;
+        public static final Period EMPTY = new Period();
         private String name;
         private String description;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)

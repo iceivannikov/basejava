@@ -12,9 +12,9 @@ public class ResumeUtil {
             Section section = resume.getSection(type);
             if (section == null) {
                 switch (type) {
-                    case PERSONAL, OBJECTIVE -> resume.addSection(type, new TextSection(""));
-                    case ACHIEVEMENT, QUALIFICATIONS -> resume.addSection(type, new ListSection(""));
-                    case EDUCATION, EXPERIENCE -> resume.addSection(type,
+                    case PERSONAL, OBJECTIVE -> resume.setSection(type, new TextSection(""));
+                    case ACHIEVEMENT, QUALIFICATIONS -> resume.setSection(type, new ListSection(""));
+                    case EDUCATION, EXPERIENCE -> resume.setSection(type,
                             new OrganizationSection(
                                     new Organization("", "",
                                             new Organization.

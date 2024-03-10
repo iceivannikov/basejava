@@ -97,7 +97,7 @@ public class DataOutputSerializationStrategy implements Strategy {
         readWithException(dis, d -> {
             ContactType contactType = ContactType.valueOf(dis.readUTF());
             String value = dis.readUTF();
-            resume.addContact(contactType, value);
+            resume.setContact(contactType, value);
         });
     }
 
@@ -105,7 +105,7 @@ public class DataOutputSerializationStrategy implements Strategy {
         readWithException(dis, d -> {
             SectionType sectionType = SectionType.valueOf(dis.readUTF());
             Section section = deserializeSection(sectionType, dis);
-            resume.addSection(sectionType, section);
+            resume.setSection(sectionType, section);
         });
     }
 

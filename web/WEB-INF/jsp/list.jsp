@@ -13,15 +13,15 @@
 <section>
     <hr>
     <a href="resume?null&action=new">
-        <button>Add new resume</button>
+        <button>Добавить резюме</button>
     </a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Delete</th>
-            <th>Edit</th>
+            <th>Имя</th>
+            <th>Почта</th>
+            <th>Удалить</th>
+            <th>Редактировать</th>
         </tr>
         <jsp:useBean id="resumes" scope="request" type="java.util.List"/>
         <c:forEach var="resume" items="${resumes}">
@@ -29,8 +29,8 @@
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
                 <td>${resume.getContact(ContactType.EMAIL)}</td>
-                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png" alt=Delete></a></td>
-                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/edit.png" alt=Edit></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png" alt=Удалить></a></td>
+                <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/edit.png" alt=Редактировать></a></td>
             </tr>
         </c:forEach>
     </table>

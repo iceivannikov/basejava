@@ -47,13 +47,13 @@ public class ResumeTestData {
 
     public static void getContacts(Resume resume) {
 //        Map<ContactType, String> contacts = new HashMap<>();
-        resume.addContact(ContactType.TELEPHONE, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        resume.addContact(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume.addContact(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
-        resume.addContact(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.addContact(ContactType.WEBSITE, "https://gkislin.ru/");
+        resume.setContact(ContactType.TELEPHONE, "+7(921) 855-0482");
+        resume.setContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.setContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.setContact(ContactType.PROFILE_LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.setContact(ContactType.PROFILE_GITHUB, "https://github.com/gkislin");
+        resume.setContact(ContactType.PROFILE_STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.setContact(ContactType.WEBSITE, "https://gkislin.ru/");
     }
 
     private static Map<SectionType, Section> getSections() {

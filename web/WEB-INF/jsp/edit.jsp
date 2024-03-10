@@ -91,14 +91,14 @@
                                 <dt>Дата начала:</dt>
                                 <dd><label>
                                     <input type="text" name="${type}periodStart${status.index}" size="30"
-                                           value="<%=DateUtil.format(period.getStartDate())%>">
+                                           value="<%=DateUtil.format(period.getStartDate())%>" placeholder="mm/yyyy">
                                 </label></dd>
                             </dl>
                             <dl>
                                 <dt>Дата завершения:</dt>
                                 <dd><label>
                                     <input type="text" name="${type}periodEnd${status.index}" size="30"
-                                           value="<%=DateUtil.format(period.getEndDate())%>">
+                                           value="<%=DateUtil.format(period.getEndDate())%>" placeholder="mm/yyyy">
                                 </label></dd>
                             </dl>
                             <hr>
@@ -110,9 +110,9 @@
         <br>
         <br>
         <br>
-        <button type="submit">Save</button>
+        <button type="submit">Сохранить</button>
     </form>
-    <button onclick="window.history.back()">Cancel</button>
+    <button onclick="window.history.back()">Отменить</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

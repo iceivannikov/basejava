@@ -4,6 +4,7 @@ import com.ivannikov.webapp.Config;
 import com.ivannikov.webapp.model.*;
 import com.ivannikov.webapp.storage.Storage;
 import com.ivannikov.webapp.util.DateUtil;
+import com.ivannikov.webapp.util.HtmlUtil;
 import com.ivannikov.webapp.util.ResumeUtil;
 
 import javax.servlet.ServletConfig;
@@ -42,13 +43,27 @@ public class ResumeServlet extends HttpServlet {
                 return;
             }
             case "view" -> resume = storage.get(uuid);
-            case "edit" -> {
-                resume = storage.get(uuid);
-                ResumeUtil.setEmptySections(resume);
-            }
             case "new" -> {
                 resume = new Resume();
                 ResumeUtil.setEmptySections(resume);
+            }
+            case "edit" -> {
+                resume = storage.get(uuid);
+                ResumeUtil.setEmptySections(resume);
+                for (SectionType type : new SectionType[]{SectionType.EXPERIENCE, SectionType.EDUCATION}) {
+                    OrganizationSection section = (OrganizationSection) resume.getSection(type);
+                    List<Organization> emptyFirstOrganizations = new ArrayList<>();
+                    emptyFirstOrganizations.add(Organization.EMPTY);
+                    if (section != null) {
+                        for (Organization org : section.getOrganizations()) {
+                            List<Organization.Period> emptyFirstPositions = new ArrayList<>();
+                            emptyFirstPositions.add(Organization.Period.EMPTY);
+                            emptyFirstPositions.addAll(org.getPeriods());
+                            emptyFirstOrganizations.add(new Organization(org.getName(), org.getWebsite(), emptyFirstPositions));
+                        }
+                    }
+                    resume.setSection(type, new OrganizationSection(emptyFirstOrganizations));
+                }
             }
         }
         req.setAttribute("resume", resume);
@@ -68,27 +83,27 @@ public class ResumeServlet extends HttpServlet {
 
         for (ContactType type : ContactType.values()) {
             String value = req.getParameter(type.name());
-            if (value == null || value.trim().isEmpty()) {
+            if (HtmlUtil.isEmpty(value)) {
                 resume.getContacts().remove(type);
             } else {
-                resume.addContact(type, value);
+                resume.setContact(type, value);
             }
         }
         for (SectionType type : SectionType.values()) {
             String value = req.getParameter(type.name());
             String[] values = req.getParameterValues(type.name());
-            if (value == null || value.trim().isEmpty() && values.length < 2) {
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 resume.getSections().remove(type);
             } else {
                 switch (type) {
                     case PERSONAL, OBJECTIVE -> resume.setSection(type,
-                            new TextSection(value.trim().replaceAll("\r\n", "")));
+                            new TextSection(value.trim().replaceAll("\\r\\n", "")));
                     case ACHIEVEMENT, QUALIFICATIONS -> {
                         List<String> listSections = new ArrayList<>();
-                        String[] split = value.split("\n");
+                        String[] split = value.split("\\n");
                         for (String s : split) {
-                            if (!s.trim().isEmpty()) {
-                                String string = s.trim().replaceAll("\r", "");
+                            if (!HtmlUtil.isEmpty(value)) {
+                                String string = s.trim().replaceAll("\\r", "");
                                 listSections.add(string);
                             }
                         }
@@ -99,18 +114,22 @@ public class ResumeServlet extends HttpServlet {
                         String[] orgWebsites = req.getParameterValues(type.name() + "website");
                         for (int i = 0; i < values.length; i++) {
                             String orgName = values[i];
-                            String[] periodNames = req.getParameterValues(type.name() + "periodName" + i);
-                            String[] periodDescriptions = req.getParameterValues(type.name() + "periodDescription" + i);
-                            String[] periodStarts = req.getParameterValues(type.name() + "periodStart" + i);
-                            String[] periodEnds = req.getParameterValues(type.name() + "periodEnd" + i);
-                            List<Organization.Period> periods = new ArrayList<>();
-                            for (int j = 0; j < periodNames.length; j++) {
-                                periods.add(new Organization.Period(periodNames[j], periodDescriptions[j],
-                                        DateUtil.parse(periodStarts[j]), DateUtil.parse(periodEnds[j])));
+                            if (HtmlUtil.isEmpty(orgName)) {
+                                String[] periodNames = req.getParameterValues(type.name() + "periodName" + i);
+                                String[] periodDescriptions = req.getParameterValues(type.name() + "periodDescription" + i);
+                                String[] periodStarts = req.getParameterValues(type.name() + "periodStart" + i);
+                                String[] periodEnds = req.getParameterValues(type.name() + "periodEnd" + i);
+                                List<Organization.Period> periods = new ArrayList<>();
+                                for (int j = 0; j < periodNames.length; j++) {
+                                    if (!HtmlUtil.isEmpty(periodDescriptions[j])) {
+                                        periods.add(new Organization.Period(periodNames[j], periodDescriptions[j],
+                                                DateUtil.parse(periodStarts[j]), DateUtil.parse(periodEnds[j])));
+                                    }
+                                }
+                                organizations.add(new Organization(orgName, orgWebsites[i], periods));
                             }
-                            organizations.add(new Organization(orgName, orgWebsites[i], periods));
                         }
-                        resume.addSection(type, new OrganizationSection(organizations));
+                        resume.setSection(type, new OrganizationSection(organizations));
                     }
                 }
             }
